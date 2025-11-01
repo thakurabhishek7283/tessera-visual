@@ -1,0 +1,21 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      dev-tooling:
+        patterns: ['@biomejs/*', 'turbo', 'tsdown', 'vitest', '@vitest/*', 'playwright', '@playwright/*', 'typescript']
+      lit:
+        patterns: ['lit', '@lit/*']
+      react:
+        patterns: ['react', 'react-dom', '@types/react', '@types/react-dom']
+    open-pull-requests-limit: 5
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ['*']
