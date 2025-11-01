@@ -1,0 +1,48 @@
+{
+  "name": "tessera-visual-monorepo",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "deps": "node scripts/fetch-deps.mjs",
+    "dev": "turbo run dev --filter=playground",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "test:browser": "turbo run test:browser",
+    "e2e": "playwright test",
+    "typecheck": "turbo run typecheck",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "size": "size-limit",
+    "changeset": "changeset",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "screenshots": "node scripts/screenshots.mjs",
+    "docs:config": "node scripts/gen-config-docs.mjs"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.0",
+    "@changesets/cli": "^3.0.0",
+    "@playwright/test": "^1.63.0",
+    "@size-limit/preset-small-lib": "^14.1.0",
+    "size-limit": "^14.1.0",
+    "tsdown": "^0.23.0",
+    "turbo": "^2.11.0",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.0",
+    "zod": "^4.6.5"
+  },
+  "pnpm": {
+    "overrides": {
+      "@tessera/core": "link:./external/tessera/packages/core",
+      "@tessera/elements": "link:./external/tessera/packages/elements",
+      "@tessera/react": "link:./external/tessera/packages/react",
+      "@tessera/testing": "link:./external/tessera/packages/testing",
+      "@tessera/transport": "link:./external/tessera/packages/transport",
+      "@tessera/storage": "link:./external/tessera/packages/storage",
+      "@tessera/protocol": "link:./external/tessera/packages/protocol"
+    }
+  }
+}
