@@ -22,6 +22,6 @@
       "persistent": true
     }
   },
-  "globalPassThroughEnv": ["BASE_PATH", "CHROMIUM_PATH", "CI", "TESSERA_SERVER_URL"],
+  "globalPassThroughEnv": ["BASE_PATH", "CHROMIUM_PATH", "CI", "NETWORK_E2E"],
   "agentGuidance": false
 }
