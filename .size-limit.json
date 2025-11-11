@@ -1,0 +1,42 @@
+[
+  {
+    "name": "@tessera/annotator \u2014 entry + plugin",
+    "path": ["packages/annotator/dist/index.js"],
+    "limit": "30 kB",
+    "gzip": true,
+    "ignore": [
+      "@tessera/core",
+      "@tessera/elements",
+      "@tessera/storage",
+      "@tessera/transport",
+      "@tessera/protocol",
+      "@tessera/react",
+      "lit",
+      "@lit/context",
+      "zod",
+      "react",
+      "react/jsx-runtime",
+      "maplibre-gl"
+    ]
+  },
+  {
+    "name": "@tessera/maps \u2014 entry + plugin",
+    "path": ["packages/maps/dist/index.js"],
+    "limit": "10 kB",
+    "gzip": true,
+    "ignore": [
+      "@tessera/core",
+      "@tessera/elements",
+      "@tessera/storage",
+      "@tessera/transport",
+      "@tessera/protocol",
+      "@tessera/react",
+      "lit",
+      "@lit/context",
+      "zod",
+      "react",
+      "react/jsx-runtime",
+      "maplibre-gl"
+    ]
+  }
+]
