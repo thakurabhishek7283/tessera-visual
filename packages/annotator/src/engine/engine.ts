@@ -99,6 +99,8 @@ export class AnnotatorEngine {
     style?: Style;
   } | null>(null);
   readonly snapIndicator: Store<Point | null> = createStore<Point | null>(null);
+  /** The selection rectangle being dragged, in world coordinates. */
+  readonly marquee: Store<Rect | null> = createStore<Rect | null>(null);
   readonly cursor: Store<string> = createStore('default');
   hooks: EngineHooks = {};
 

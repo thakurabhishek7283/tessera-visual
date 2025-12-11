@@ -107,6 +107,7 @@ export class ToolManager {
     this.current?.cancel?.(this.context());
     this.#engine.preview.set(null);
     this.#engine.snapIndicator.set(null);
+    this.#engine.marquee.set(null);
     this.#pointerDown = false;
   }
 
