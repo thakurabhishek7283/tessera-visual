@@ -32,7 +32,7 @@ export interface ToolContext {
   /** Shows a shape that is still being drawn, or hides it with `null`. */
   preview(geometry: Geometry | null, style?: Style): void;
   /** Turns a finished shape into an annotation (label flow and host veto included). */
-  commit(geometry: Geometry): Promise<Annotation | null>;
+  commit(geometry: Geometry, style?: Style): Promise<Annotation | null>;
   setCursor(cursor: string): void;
   /** Snaps `p` to nearby shapes when snapping is on, and shows the snap indicator. */
   snap(p: Point, excludeId?: string): Point;
@@ -108,6 +108,8 @@ export class ToolManager {
     this.#engine.preview.set(null);
     this.#engine.snapIndicator.set(null);
     this.#engine.marquee.set(null);
+    this.#engine.drafts.set(new Map());
+    this.#engine.erasing.set([]);
     this.#pointerDown = false;
   }
 

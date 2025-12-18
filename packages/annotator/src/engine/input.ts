@@ -78,7 +78,6 @@ export function attachInput(
     if (e.button !== 0 && e.pointerType === 'mouse') return;
     gesture = 'tool';
     engine.tools.pointerDown(normalize(e));
-    if (engine.tools.currentId === 'pan') panLast = { x: e.clientX, y: e.clientY };
   };
 
   const onMove = (e: PointerEvent): void => {

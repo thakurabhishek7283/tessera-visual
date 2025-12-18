@@ -101,6 +101,12 @@ export class AnnotatorEngine {
   readonly snapIndicator: Store<Point | null> = createStore<Point | null>(null);
   /** The selection rectangle being dragged, in world coordinates. */
   readonly marquee: Store<Rect | null> = createStore<Rect | null>(null);
+  /** Geometry shown instead of the stored one while a drag is in progress (one undo step on drop). */
+  readonly drafts: Store<ReadonlyMap<string, Geometry>> = createStore<
+    ReadonlyMap<string, Geometry>
+  >(new Map());
+  /** Ids the eraser has touched; they are dimmed until the pointer is released. */
+  readonly erasing: Store<readonly string[]> = createStore<readonly string[]>([]);
   readonly cursor: Store<string> = createStore('default');
   hooks: EngineHooks = {};
 
@@ -228,7 +234,7 @@ export class AnnotatorEngine {
       tolerance: this.tolerance(),
       preview: (geometry, style) =>
         this.preview.set(geometry ? { geometry, ...(style ? { style } : {}) } : null),
-      commit: (geometry) => this.create(geometry),
+      commit: (geometry, style) => this.create(geometry, style),
       setCursor: (c) => this.setCursor(c),
       snap: (p, excludeId) => this.snap(p, excludeId),
     };
@@ -259,20 +265,20 @@ export class AnnotatorEngine {
    * Turns a drawn shape into an annotation: host veto, label flow, history, selection.
    * Resolves with `null` when the shape was discarded.
    */
-  create(geometry: Geometry): Promise<Annotation | null> {
-    const job = this.#create(geometry);
+  create(geometry: Geometry, style?: Style): Promise<Annotation | null> {
+    const job = this.#create(geometry, style);
     this.#pending.add(job);
     void job.finally(() => this.#pending.delete(job));
     return job;
   }
 
-  async #create(geometry: Geometry): Promise<Annotation | null> {
+  async #create(geometry: Geometry, override?: Style): Promise<Annotation | null> {
     if (!this.canEdit) return null;
     const draft: Annotation = {
       id: '',
       geometry,
       bodies: [],
-      style: this.styleForNew(),
+      style: { ...this.styleForNew(), ...override },
       createdAt: '',
       updatedAt: '',
     };
@@ -287,7 +293,7 @@ export class AnnotatorEngine {
       {
         geometry,
         bodies: label ? [{ purpose: 'tagging', value: label }] : [],
-        style: this.styleForNew(label),
+        style: { ...this.styleForNew(label), ...override },
       },
     ]);
     if (!created) return null;
@@ -353,6 +359,24 @@ export class AnnotatorEngine {
     this.store.update([{ id, patch }]);
   }
 
+  /** The annotation as it should look now: with the geometry of a drag in progress, if any. */
+  effective(a: Annotation): Annotation {
+    const draft = this.drafts.get().get(a.id);
+    return draft ? { ...a, geometry: draft } : a;
+  }
+
+  /** Asks the UI to edit a text annotation in place; an empty result deletes it. */
+  async editText(id: string): Promise<void> {
+    const a = this.store.get(id);
+    if (!a || a.geometry.type !== 'text' || !this.canEdit || a.locked || !this.hooks.editText)
+      return;
+    const g = a.geometry;
+    const next = await this.hooks.editText({ x: g.x, y: g.y, fontSize: g.fontSize, text: g.text });
+    if (next === null || next === g.text) return;
+    if (next.trim() === '') this.store.remove([id]);
+    else this.store.update([{ id, patch: { geometry: { ...g, text: next } } }], 'Edit text');
+  }
+
   // ---- view ----
 
   /** The area the user can look at: the image, or the drawn content of a board. */
@@ -412,6 +436,7 @@ export class AnnotatorEngine {
 
   destroy(): void {
     this.tools.cancel();
+    this.drafts.set(new Map());
     this.index.clear();
   }
 
