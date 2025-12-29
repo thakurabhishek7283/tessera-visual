@@ -19,6 +19,8 @@ export interface ShapeOptions {
   strokeScales: boolean;
   /** Replaces palette-name resolution (export needs concrete colours). */
   color?: (value: string | undefined) => string;
+  /** perfect-freehand options for brush strokes. */
+  brush?: { thinning: number; smoothing: number; streamline: number };
 }
 
 const f = (n: number): string => String(Math.round(n * 100) / 100);
@@ -148,7 +150,7 @@ export function describeShape(a: Annotation, opts: ShapeOptions): SvgNode[] {
       return [
         {
           tag: 'path',
-          attrs: { d: freehandPath(g.points, style.strokeWidth ?? DEFAULT_BRUSH_SIZE) },
+          attrs: { d: freehandPath(g.points, style.strokeWidth ?? DEFAULT_BRUSH_SIZE, opts.brush) },
           style: {
             fill: stroke,
             stroke: 'none',

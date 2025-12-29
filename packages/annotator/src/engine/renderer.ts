@@ -1,8 +1,9 @@
 import type { Unsubscribe } from '@tessera/core';
-import { LINE_HEIGHT, type TextMeasure } from '../geometry/bbox.js';
-import type { Annotation, Point, Rect, Style } from '../geometry/model.js';
+import { bboxOf, LINE_HEIGHT, type TextMeasure } from '../geometry/bbox.js';
+import type { Annotation, Geometry, Point, Rect, Style } from '../geometry/model.js';
+import { computeHandles } from '../tools/handles.js';
 import type { AnnotatorEngine } from './engine.js';
-import { describeShape, type SvgNode } from './shape-svg.js';
+import { describeShape, type ShapeOptions, type SvgNode } from './shape-svg.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -31,6 +32,9 @@ interface Dirty {
 interface Painted {
   node: SVGGElement;
   annotation: Annotation;
+  /** The drag geometry the node shows, if any. */
+  draft: Geometry | undefined;
+  faded: boolean;
 }
 
 /**
@@ -75,6 +79,8 @@ export class Renderer {
       engine.viewport.state.subscribe(() => this.#invalidate('view', 'overlay')),
       engine.viewport.size.subscribe(() => this.#invalidate('overlay')),
       engine.selection.ids.subscribe(() => this.#invalidate('overlay')),
+      engine.drafts.subscribe(() => this.#invalidate('shapes', 'overlay')),
+      engine.erasing.subscribe(() => this.#invalidate('shapes')),
       engine.preview.subscribe(() => this.#invalidate('preview')),
       engine.snapIndicator.subscribe(() => this.#invalidate('overlay')),
       engine.marquee.subscribe(() => this.#invalidate('overlay')),
@@ -128,30 +134,47 @@ export class Renderer {
     if (d.overlay) this.#paintOverlay();
   }
 
+  #shapeOptions(): ShapeOptions {
+    const { thinning, smoothing, streamline } = this.#engine.config.freehand;
+    return {
+      strokeScales: this.#engine.strokeScales,
+      brush: { thinning, smoothing, streamline },
+    };
+  }
+
   #paint(a: Annotation): SVGGElement {
     const node = svgEl('g', { 'data-id': a.id, 'aria-hidden': 'true' }) as SVGGElement;
     if (a.hidden) node.setAttribute('display', 'none');
-    for (const part of describeShape(a, { strokeScales: this.#engine.strokeScales })) {
+    for (const part of describeShape(this.#engine.effective(a), this.#shapeOptions())) {
       node.append(build(part));
     }
     return node;
   }
 
   #paintShapes(): void {
-    const list = this.#engine.store.list.get();
+    const engine = this.#engine;
+    const list = engine.store.list.get();
+    const drafts = engine.drafts.get();
+    const erasing = new Set(engine.erasing.get());
     const live = new Set<string>();
     list.forEach((a, i) => {
       live.add(a.id);
-      const had = this.#painted.get(a.id);
-      let node = had?.node;
-      if (!had || had.annotation !== a) {
+      const draft = drafts.get(a.id);
+      const faded = erasing.has(a.id);
+      let had = this.#painted.get(a.id);
+      if (!had || had.annotation !== a || had.draft !== draft) {
         const fresh = this.#paint(a);
         had?.node.replaceWith(fresh);
-        node = fresh;
-        this.#painted.set(a.id, { node: fresh, annotation: a });
+        had = { node: fresh, annotation: a, draft, faded: false };
+        this.#painted.set(a.id, had);
       }
-      if (node && this.shapes.children[i] !== node) {
-        this.shapes.insertBefore(node, this.shapes.children[i] ?? null);
+      if (had.faded !== faded) {
+        if (faded) had.node.setAttribute('opacity', '0.25');
+        else had.node.removeAttribute('opacity');
+        had.faded = faded;
+      }
+      if (this.shapes.children[i] !== had.node) {
+        this.shapes.insertBefore(had.node, this.shapes.children[i] ?? null);
       }
     });
     for (const [id, p] of this.#painted) {
@@ -174,7 +197,7 @@ export class Renderer {
       createdAt: '',
       updatedAt: '',
     };
-    for (const part of describeShape(draft, { strokeScales: this.#engine.strokeScales })) {
+    for (const part of describeShape(draft, this.#shapeOptions())) {
       this.preview.append(build(part));
     }
   }
@@ -195,9 +218,30 @@ export class Renderer {
       });
     };
 
-    for (const id of engine.selection.ids.get()) {
-      const a = engine.store.get(id);
-      if (a && !a.hidden) this.overlay.append(rectOverlay(engine.index.bbox(a), 'selection', 4));
+    const selected = engine.selection.ids.get();
+    for (const id of selected) {
+      const stored = engine.store.get(id);
+      if (!stored || stored.hidden) continue;
+      const a = engine.effective(stored);
+      const box = a === stored ? engine.index.bbox(a) : bboxOf(a.geometry, engine.index.measure);
+      this.overlay.append(rectOverlay(box, a.locked ? 'selection locked' : 'selection', 4));
+    }
+    const only = selected.length === 1 ? engine.store.get(selected[0] as string) : undefined;
+    if (only && engine.canEdit && !only.locked && !only.hidden) {
+      for (const h of computeHandles(engine.effective(only).geometry)) {
+        const [x, y] = to(h.at);
+        const size = h.kind === 'midpoint' ? 6 : 9;
+        this.overlay.append(
+          svgEl('rect', {
+            class: `handle ${h.kind}`,
+            x: x - size / 2,
+            y: y - size / 2,
+            width: size,
+            height: size,
+            rx: h.kind === 'resize' ? 1 : size / 2,
+          }),
+        );
+      }
     }
     const marquee = engine.marquee.get();
     if (marquee) this.overlay.append(rectOverlay(marquee, 'marquee'));
