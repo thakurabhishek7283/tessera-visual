@@ -1,9 +1,11 @@
 import { createIdGenerator } from '@tessera/core';
 import { createFakeClock, type FakeClock } from '@tessera/testing';
+import type { ToolId } from '../src/config.js';
 import { AnnotatorConfig, type AnnotatorConfigValue } from '../src/config.js';
 import { AnnotatorEngine, type SurfaceMode } from '../src/engine/engine.js';
 import type { KeyInput, NormalizedPointer } from '../src/engine/tools.js';
 import type { Annotation, Geometry, Point } from '../src/geometry/model.js';
+import { registerDefaultTools } from '../src/tools/index.js';
 
 export function ptr(
   x: number,
@@ -76,3 +78,59 @@ export function put(
 }
 
 export const pts = (...p: Array<[number, number]>): Point[] => p;
+
+export const ALL_TOOLS: ToolId[] = [
+  'select',
+  'pan',
+  'rect',
+  'ellipse',
+  'polygon',
+  'polyline',
+  'arrow',
+  'freehand',
+  'point',
+  'text',
+  'eraser',
+];
+
+/** An engine with every real tool registered and enabled. */
+export function toolEngine(
+  config: Partial<AnnotatorConfigValue> = {},
+  mode: SurfaceMode = 'image',
+): TestEngine {
+  return makeEngine({ tools: ALL_TOOLS, ...config }, mode, registerDefaultTools);
+}
+
+/** A pointer at a world position, with screen coordinates derived from the viewport. */
+export function at(
+  engine: AnnotatorEngine,
+  x: number,
+  y: number,
+  over: Partial<NormalizedPointer> = {},
+): NormalizedPointer {
+  const screen = engine.viewport.worldToScreen([x, y]);
+  return ptr(x, y, { screen, ...over });
+}
+
+/** Press, move through the given points and release at the last one. */
+export function drag(
+  engine: AnnotatorEngine,
+  from: Point,
+  ...rest: Array<Point | [number, number, Partial<NormalizedPointer>]>
+): void {
+  const mods = (rest.at(-1) as [number, number, Partial<NormalizedPointer>] | undefined)?.[2] ?? {};
+  engine.tools.pointerDown(at(engine, from[0], from[1], mods));
+  for (const p of rest) engine.tools.pointerMove(at(engine, p[0], p[1], mods));
+  const last = rest.at(-1) ?? from;
+  engine.tools.pointerUp(at(engine, last[0], last[1], mods));
+}
+
+export function click(
+  engine: AnnotatorEngine,
+  x: number,
+  y: number,
+  over: Partial<NormalizedPointer> = {},
+): void {
+  engine.tools.pointerDown(at(engine, x, y, over));
+  engine.tools.pointerUp(at(engine, x, y, over));
+}
