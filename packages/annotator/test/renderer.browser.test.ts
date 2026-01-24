@@ -170,6 +170,67 @@ describe('Renderer', () => {
     expect(renderer.overlay.querySelector('circle.snap')?.getAttribute('cx')).toBe('210');
   });
 
+  it('shows grips for one selected shape: eight on a rect, vertices and midpoints on a polygon', () => {
+    const { engine, renderer } = mount();
+    const box = put(engine, rectOf(100, 100, 50, 50));
+    engine.selection.set([box.id]);
+    renderer.flush();
+    expect(renderer.overlay.querySelectorAll('rect.handle.resize')).toHaveLength(8);
+    const poly = put(engine, {
+      type: 'polygon',
+      points: [
+        [0, 0],
+        [60, 0],
+        [30, 40],
+      ],
+    });
+    engine.selection.set([poly.id]);
+    renderer.flush();
+    expect(renderer.overlay.querySelectorAll('rect.handle.vertex')).toHaveLength(3);
+    expect(renderer.overlay.querySelectorAll('rect.handle.midpoint')).toHaveLength(3);
+  });
+
+  it('shows no grips for several shapes, a locked shape or in read-only mode', () => {
+    const { engine, renderer } = mount();
+    const a = put(engine, rectOf(0, 0, 10, 10));
+    const b = put(engine, rectOf(50, 0, 10, 10), { locked: true });
+    engine.selection.set([a.id, b.id]);
+    renderer.flush();
+    expect(renderer.overlay.querySelectorAll('.handle')).toHaveLength(0);
+    engine.selection.set([b.id]);
+    renderer.flush();
+    expect(renderer.overlay.querySelectorAll('.handle')).toHaveLength(0);
+    expect(renderer.overlay.querySelector('rect.selection.locked')).not.toBeNull();
+    engine.setConfig({ ...engine.config, readOnly: true });
+    engine.selection.set([a.id]);
+    renderer.flush();
+    expect(renderer.overlay.querySelectorAll('.handle')).toHaveLength(0);
+  });
+
+  it('paints a drag draft in place of the stored shape and restores it afterwards', () => {
+    const { engine, renderer } = mount();
+    const a = put(engine, rectOf(0, 0, 10, 10));
+    renderer.flush();
+    engine.drafts.set(new Map([[a.id, rectOf(80, 0, 10, 10)]]));
+    renderer.flush();
+    expect(renderer.nodeOf(a.id)?.querySelector('rect')?.getAttribute('x')).toBe('80');
+    expect(engine.store.get(a.id)?.geometry).toEqual(a.geometry);
+    engine.drafts.set(new Map());
+    renderer.flush();
+    expect(renderer.nodeOf(a.id)?.querySelector('rect')?.getAttribute('x')).toBe('0');
+  });
+
+  it('dims shapes the eraser has marked', () => {
+    const { engine, renderer } = mount();
+    const a = put(engine, rectOf(0, 0, 10, 10));
+    engine.erasing.set([a.id]);
+    renderer.flush();
+    expect(renderer.nodeOf(a.id)?.getAttribute('opacity')).toBe('0.25');
+    engine.erasing.set([]);
+    renderer.flush();
+    expect(renderer.nodeOf(a.id)?.hasAttribute('opacity')).toBe(false);
+  });
+
   it('renders brush strokes as filled paths, arrows with heads, points as round dots', () => {
     const { engine, renderer } = mount();
     const free = put(engine, {
