@@ -102,6 +102,9 @@ export type Annotation = z.infer<typeof AnnotationSchema>;
 export type NewAnnotation = Omit<Annotation, 'id' | 'createdAt' | 'updatedAt' | 'bodies'> & {
   id?: string;
   bodies?: Body[];
+  /** Kept when given (imports); otherwise the time of creation. */
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 /** The first `tagging` body: the label of an annotation. */

@@ -96,6 +96,9 @@ importers:
       '@tessera/react':
         specifier: link:../../external/tessera/packages/react
         version: link:../../external/tessera/packages/react
+      '@tessera/storage':
+        specifier: link:../../external/tessera/packages/storage
+        version: link:../../external/tessera/packages/storage
       lit:
         specifier: ^3.3.0
         version: 3.3.3
@@ -115,9 +118,6 @@ importers:
       '@tessera-internal/test-utils':
         specifier: workspace:*
         version: link:../test-utils
-      '@tessera/storage':
-        specifier: link:../../external/tessera/packages/storage
-        version: link:../../external/tessera/packages/storage
       '@tessera/testing':
         specifier: link:../../external/tessera/packages/testing
         version: link:../../external/tessera/packages/testing

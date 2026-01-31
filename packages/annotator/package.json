@@ -38,6 +38,7 @@
     "@tessera/core": "^0.1.0",
     "@tessera/elements": "^0.1.0",
     "@tessera/react": "^0.1.0",
+    "@tessera/storage": "^0.1.0",
     "react": "^19.0.0"
   },
   "peerDependenciesMeta": {
