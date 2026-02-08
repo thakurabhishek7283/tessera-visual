@@ -111,8 +111,8 @@ export class AnnotationStore {
         id: item.id ?? this.#opts.ids.next(),
         bodies: item.bodies ?? [],
         ...(item.createdBy === undefined && user !== undefined ? { createdBy: user } : {}),
-        createdAt: now,
-        updatedAt: now,
+        createdAt: item.createdAt ?? now,
+        updatedAt: item.updatedAt ?? item.createdAt ?? now,
       }),
     );
     const base = this.list.get().length;
