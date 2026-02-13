@@ -85,10 +85,6 @@ export const AnnotatorConfig = z.object({
     .describe(
       '`storage` keeps each set in the `annotator.sets` collection, keyed by `set-id` or the image URL.',
     ),
-  minimap: z
-    .boolean()
-    .default(false)
-    .describe('Show an overview of the whole surface in a corner.'),
 });
 
 export type AnnotatorConfigValue = z.infer<typeof AnnotatorConfig>;

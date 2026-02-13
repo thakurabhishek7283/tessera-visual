@@ -45,6 +45,8 @@ export class Renderer {
   readonly svg: SVGSVGElement;
   readonly world: SVGGElement;
   readonly shapes: SVGGElement;
+  /** The image, or the board grid: painted under the shapes. */
+  readonly background: SVGGElement;
   readonly preview: SVGGElement;
   /** Screen-space layer: selection outlines, handles and the snap indicator keep a constant size. */
   readonly overlay: SVGGElement;
@@ -60,10 +62,11 @@ export class Renderer {
     this.#engine = engine;
     this.svg = svg;
     this.world = svgEl('g', { class: 'world' }) as SVGGElement;
+    this.background = svgEl('g', { class: 'background', 'pointer-events': 'none' }) as SVGGElement;
     this.shapes = svgEl('g', { class: 'shapes' }) as SVGGElement;
     this.preview = svgEl('g', { class: 'preview', 'pointer-events': 'none' }) as SVGGElement;
     this.overlay = svgEl('g', { class: 'overlay', 'pointer-events': 'none' }) as SVGGElement;
-    this.world.append(this.shapes, this.preview);
+    this.world.append(this.background, this.shapes, this.preview);
 
     // Hidden text node used to measure text shapes with the real font.
     this.#probe = svgEl('text', { visibility: 'hidden', 'aria-hidden': 'true' }) as SVGTextElement;
@@ -117,6 +120,43 @@ export class Renderer {
   #invalidate(...parts: Array<keyof Dirty>): void {
     for (const p of parts) this.#dirty[p] = true;
     if (this.#frame === 0) this.#frame = requestAnimationFrame(() => this.flush());
+  }
+
+  /** Shows an image at its natural size, from the world origin. `null` removes it. */
+  setImage(image: { href: string; w: number; h: number } | null): void {
+    this.background.replaceChildren();
+    if (!image) return;
+    this.background.append(
+      svgEl('image', { href: image.href, x: 0, y: 0, width: image.w, height: image.h }),
+    );
+  }
+
+  /** Shows a dot grid that fills the whole board, scaling with the world. */
+  setGrid(spacing = 24): void {
+    this.background.replaceChildren();
+    const id = `tessera-grid-${Math.random().toString(36).slice(2, 8)}`;
+    const pattern = svgEl('pattern', {
+      id,
+      width: spacing,
+      height: spacing,
+      patternUnits: 'userSpaceOnUse',
+    });
+    pattern.append(
+      svgEl('circle', { cx: spacing / 2, cy: spacing / 2, r: 1.2, class: 'grid-dot' }),
+    );
+    const defs = svgEl('defs', {});
+    defs.append(pattern);
+    const extent = 100_000;
+    this.background.append(
+      defs,
+      svgEl('rect', {
+        x: -extent,
+        y: -extent,
+        width: extent * 2,
+        height: extent * 2,
+        fill: `url(#${id})`,
+      }),
+    );
   }
 
   /** Paints now. Normally called from the animation frame; tests call it directly. */

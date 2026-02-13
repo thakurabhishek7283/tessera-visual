@@ -210,6 +210,54 @@ export class AnnotationStore {
     return true;
   }
 
+  /**
+   * Adds imported annotations as one undo step. `replace` removes everything first; `merge` adds
+   * new ids and lets an import that is newer than the existing copy replace it.
+   */
+  importItems(
+    items: readonly NewAnnotation[],
+    mode: 'replace' | 'merge',
+    label = 'Import annotations',
+  ): Annotation[] {
+    const now = this.#now();
+    const user = this.#opts.user();
+    const working = mode === 'replace' ? [] : [...this.list.get()];
+    const changes: Change[] = [];
+    if (mode === 'replace') {
+      for (const from of this.list.get())
+        changes.push({ id: from.id, from, to: undefined, index: 0 });
+    }
+    const written: Annotation[] = [];
+    for (const item of items) {
+      const id = item.id ?? this.#opts.ids.next();
+      const to: Annotation = {
+        ...item,
+        id,
+        bodies: item.bodies ?? [],
+        ...(item.createdBy === undefined && user !== undefined ? { createdBy: user } : {}),
+        createdAt: item.createdAt ?? now,
+        updatedAt: item.updatedAt ?? item.createdAt ?? now,
+      };
+      const at = working.findIndex((a) => a.id === id);
+      const from = working[at];
+      if (from) {
+        if (Date.parse(to.updatedAt) > Date.parse(from.updatedAt)) {
+          changes.push({ id, from, to, index: at });
+          working[at] = to;
+          written.push(to);
+        }
+        continue;
+      }
+      changes.push({ id, from: undefined, to, index: working.length });
+      working.push(to);
+      written.push(to);
+    }
+    if (changes.length === 0) return [];
+    this.list.set((l) => applyChanges(l, changes, false));
+    this.#push(label, changes);
+    return written;
+  }
+
   /** Replaces everything without touching the history (loading, remote merges). */
   load(list: readonly Annotation[]): void {
     this.list.set(list);
