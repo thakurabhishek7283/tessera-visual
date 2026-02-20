@@ -393,7 +393,8 @@ export class AnnotatorEngine {
 
   setSurface(size: { w: number; h: number } | null): void {
     this.surface.set(size);
-    this.fit();
+    // Without a measured view there is nothing to fit to yet; the surface fits on its first size.
+    if (this.viewport.size.get().w > 0) this.fit();
   }
 
   /** Shows the whole surface. For an image this also sets how far the user can zoom out. */

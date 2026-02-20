@@ -96,6 +96,11 @@ function hash(text: string): string {
   return (h >>> 0).toString(16).padStart(8, '0');
 }
 
+/** What is stored as `source`: informational only, so a data URL is cut down to its start. */
+export function describeSource(source: string): string {
+  return source.length <= 500 ? source : `${source.slice(0, 120)}… (${source.length} characters)`;
+}
+
 /** The document id of a set: the explicit `set-id` when it is a safe id, else a hash of the source. */
 export function setDocId(source: string, setId?: string): string {
   if (setId && /^[A-Za-z0-9_.:-]{1,120}$/.test(setId)) return setId;
@@ -135,7 +140,7 @@ export class SetPersistence {
 
   #local(): SetDocValue {
     return {
-      source: this.#opts.source,
+      source: describeSource(this.#opts.source),
       annotations: [...this.#opts.engine.annotations.get()],
       deletedIds: [...this.#deleted].map(([id, at]) => ({ id, at })),
     };

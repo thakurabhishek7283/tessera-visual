@@ -6,6 +6,7 @@ import { AnnotatorConfig } from '../src/config.js';
 import { AnnotatorEngine } from '../src/engine/engine.js';
 import type { Annotation, Geometry } from '../src/geometry/model.js';
 import {
+  describeSource,
   mergeSets,
   type SetDocValue,
   SetPersistence,
@@ -285,5 +286,14 @@ describe('SetPersistence', () => {
     for (const g of shapes) put(engine, g);
     await persistence.flush();
     expect((await stored())?.annotations).toHaveLength(3);
+  });
+});
+
+describe('describeSource', () => {
+  it('keeps normal URLs and cuts down very long ones such as data URLs', () => {
+    expect(describeSource('https://x/a.jpg')).toBe('https://x/a.jpg');
+    const long = `data:image/png;base64,${'A'.repeat(5000)}`;
+    expect(describeSource(long).length).toBeLessThan(200);
+    expect(describeSource(long)).toContain('5022 characters');
   });
 });
