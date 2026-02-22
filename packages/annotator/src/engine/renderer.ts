@@ -16,9 +16,29 @@ function build(node: SvgNode): SVGElement {
   return el;
 }
 
+const PRIMARY = 'var(--tessera-color-primary, #1d4ed8)';
+const BG = 'var(--tessera-color-bg, #ffffff)';
+
+/** Inline styles for the overlay, so it looks right wherever the SVG is mounted. */
+const OVERLAY_STYLE: Record<string, string> = {
+  selection: `fill:none;stroke:${PRIMARY};stroke-width:1.5;stroke-dasharray:5 3`,
+  locked: 'stroke:var(--tessera-color-text-muted, #475569)',
+  handle: `fill:${BG};stroke:${PRIMARY};stroke-width:1.5`,
+  midpoint: `fill:${PRIMARY};opacity:0.55;stroke:${BG};stroke-width:1`,
+  marquee: `fill:${PRIMARY};fill-opacity:0.1;stroke:${PRIMARY};stroke-width:1;stroke-dasharray:4 3`,
+  snap: 'fill:none;stroke:var(--tessera-color-warning, #92400e);stroke-width:2',
+  'grid-dot': 'fill:var(--tessera-color-border, #6b7686);opacity:0.45',
+};
+
 function svgEl(tag: string, attrs: Record<string, string | number>): SVGElement {
   const node = document.createElementNS(SVG_NS, tag);
   for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, String(v));
+  const style = String(attrs.class ?? '')
+    .split(' ')
+    .map((c) => OVERLAY_STYLE[c])
+    .filter(Boolean)
+    .join(';');
+  if (style) node.setAttribute('style', style);
   return node;
 }
 

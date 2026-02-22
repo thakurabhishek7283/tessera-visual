@@ -1,8 +1,32 @@
 [
   {
-    "name": "@tessera/annotator \u2014 entry + plugin",
-    "path": ["packages/annotator/dist/index.js"],
+    "name": "@tessera/annotator \u2014 entry + plugin (engine, tools, persistence, interop)",
+    "path": [
+      "packages/annotator/dist/index.js",
+      "packages/annotator/dist/plugin-*.js",
+      "packages/annotator/dist/color-*.js"
+    ],
     "limit": "30 kB",
+    "gzip": true,
+    "ignore": [
+      "@tessera/core",
+      "@tessera/elements",
+      "@tessera/storage",
+      "@tessera/transport",
+      "@tessera/protocol",
+      "@tessera/react",
+      "lit",
+      "@lit/context",
+      "zod",
+      "react",
+      "react/jsx-runtime",
+      "maplibre-gl"
+    ]
+  },
+  {
+    "name": "@tessera/annotator \u2014 elements (everything they can load, the lazy plugin included)",
+    "path": ["packages/annotator/dist/elements/index.js"],
+    "limit": "38 kB",
     "gzip": true,
     "ignore": [
       "@tessera/core",
