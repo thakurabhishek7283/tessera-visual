@@ -48,6 +48,7 @@ export const uiStyles = css`
   input[type='text'],
   select,
   textarea {
+    box-sizing: border-box;
     width: 100%;
     min-height: 32px;
     font: inherit;
@@ -63,6 +64,7 @@ export const uiStyles = css`
   }
   label {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 2px;
     font-size: var(--tessera-font-size-sm);
     font-weight: 600;

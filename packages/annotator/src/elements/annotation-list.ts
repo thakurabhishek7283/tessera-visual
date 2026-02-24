@@ -106,6 +106,7 @@ export class TesseraAnnotationList extends TesseraElement {
       }
       .details {
         display: grid;
+        grid-template-columns: minmax(0, 1fr);
         gap: var(--tessera-space-2);
         padding: var(--tessera-space-3);
         border-top: 1px solid var(--tessera-color-border);
