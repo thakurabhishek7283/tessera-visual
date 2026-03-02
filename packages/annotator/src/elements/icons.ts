@@ -1,7 +1,15 @@
 import { registerIcons } from '@tessera/elements';
 
-/** Tool icons, drawn for this kit on the same 24×24 grid and 2 px strokes as the core set. */
-registerIcons({
+/**
+ * Adds the tool icons, drawn for this kit on the same 24×24 grid and 2 px strokes as the core set.
+ * A function, not a bare import: the package declares most modules side-effect free, so bundlers
+ * would drop an import that only registers.
+ */
+export function registerAnnotatorIcons(): void {
+  registerIcons(ICON_SET);
+}
+
+const ICON_SET: Record<string, string> = {
   'tool-select': '<path d="M5 3l14 7-6 2-2 7L5 3z"/>',
   'tool-pan':
     '<path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V11M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6.5a1.5 1.5 0 0 1 3 0V14M17 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-4.7-2.3L5 14.5a1.5 1.5 0 0 1 2.4-1.8L8 13.5"/>',
@@ -17,4 +25,4 @@ registerIcons({
     '<path d="M8 20h12M5.5 15.5l9-9a2 2 0 0 1 3 0l2 2a2 2 0 0 1 0 3L11 20H8l-2.5-2.5a1.4 1.4 0 0 1 0-2z"/>',
   maximize: '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
   unlock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/>',
-});
+};

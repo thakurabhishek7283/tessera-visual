@@ -1,7 +1,7 @@
 import { defineElement, registerImplicitPlugin } from '@tessera/elements';
 import { TesseraAnnotationList } from './annotation-list.js';
 import { TesseraAnnotatorElement } from './annotator.js';
-import './icons.js';
+import { registerAnnotatorIcons } from './icons.js';
 import { TesseraLabelPicker } from './label-picker.js';
 import { installAnnotatorTokens } from './tokens.js';
 import { TesseraAnnotatorToolbar } from './toolbar.js';
@@ -13,6 +13,7 @@ export { TesseraLabelPicker } from './label-picker.js';
 export { TesseraAnnotatorToolbar } from './toolbar.js';
 export { TesseraWhiteboardElement } from './whiteboard.js';
 
+registerAnnotatorIcons();
 if (typeof document !== 'undefined') installAnnotatorTokens(document);
 
 // Defining the tags and registering the loader is what lets a bare <tessera-annotator> work on the

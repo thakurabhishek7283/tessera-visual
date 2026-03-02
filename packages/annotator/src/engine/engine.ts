@@ -368,8 +368,7 @@ export class AnnotatorEngine {
   /** Asks the UI to edit a text annotation in place; an empty result deletes it. */
   async editText(id: string): Promise<void> {
     const a = this.store.get(id);
-    if (!a || a.geometry.type !== 'text' || !this.canEdit || a.locked || !this.hooks.editText)
-      return;
+    if (a?.geometry.type !== 'text' || !this.canEdit || a.locked || !this.hooks.editText) return;
     const g = a.geometry;
     const next = await this.hooks.editText({ x: g.x, y: g.y, fontSize: g.fontSize, text: g.text });
     if (next === null || next === g.text) return;

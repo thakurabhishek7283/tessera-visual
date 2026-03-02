@@ -139,7 +139,8 @@ export class TesseraAnnotatorToolbar extends TesseraElement {
     const buttons = [
       ...this.renderRoot.querySelectorAll<HTMLButtonElement>('[data-roving]:not(:disabled)'),
     ];
-    const current = buttons.findIndex((b) => b === this.shadowRoot?.activeElement);
+    const focused = this.shadowRoot?.activeElement;
+    const current = focused ? buttons.indexOf(focused as HTMLButtonElement) : -1;
     const next =
       delta === 'first'
         ? 0
