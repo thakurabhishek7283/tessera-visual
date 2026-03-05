@@ -2,7 +2,6 @@ import '@tessera/elements/define';
 import '../src/elements/index.js';
 import {
   cleanup,
-  deepQuery,
   expectAccessible,
   mountInstance,
   must,

@@ -1,6 +1,6 @@
-import { describe, expect, it, vi } from 'vitest';
-import type { Annotation, Geometry } from '../src/geometry/model.js';
-import { at, click, drag, key, ptr, put, rectOf, toolEngine } from './helpers.js';
+import { describe, expect, it } from 'vitest';
+import type { Geometry } from '../src/geometry/model.js';
+import { at, drag, key, put, rectOf, toolEngine } from './helpers.js';
 
 const geometries = (engine: ReturnType<typeof toolEngine>['engine']): Geometry[] =>
   engine.store.list.get().map((a) => a.geometry);
