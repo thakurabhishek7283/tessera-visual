@@ -7,7 +7,7 @@ import {
 } from '@tessera/core';
 import { createStorage, createUploads } from '@tessera/storage';
 import { createTransport } from '@tessera/transport';
-import { SECTIONS } from './sections.js';
+import { FEATURES, featureOf } from './sections.js';
 import { USERS } from './users.js';
 
 export interface InstanceOptions {
@@ -27,13 +27,13 @@ export async function createInstance(opts: InstanceOptions): Promise<TesseraInst
   const demoUser = USERS[opts.user] ?? USERS.alice;
   if (!demoUser) throw new Error('no demo users');
   const features: TesseraConfig['features'] = Object.fromEntries(
-    SECTIONS.filter((s) => s.id !== 'overview').map((s) => [
-      s.id,
-      { ...s.defaults, ...opts.configs[s.id], enabled: opts.enabled[s.id] ?? true },
+    FEATURES.map((s) => [
+      featureOf(s),
+      { ...s.defaults, ...opts.configs[featureOf(s)], enabled: opts.enabled[featureOf(s)] ?? true },
     ]),
   );
   const plugins: Record<string, PluginLoader> = Object.fromEntries(
-    SECTIONS.map((s) => [s.id, s.load]),
+    FEATURES.map((s) => [featureOf(s), s.load]),
   );
 
   return createTessera(

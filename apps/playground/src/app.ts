@@ -10,7 +10,7 @@ import {
 } from 'lit';
 import './config-form.js';
 import { createInstance } from './instance.js';
-import { SECTIONS } from './sections.js';
+import { FEATURES, featureOf, SECTIONS } from './sections.js';
 import { anotherUser, USERS } from './users.js';
 
 const params = new URLSearchParams(location.search);
@@ -224,16 +224,18 @@ export class PlaygroundApp extends LitElement {
   };
 
   #renderPanel(): unknown {
+    const current = SECTIONS.find((s) => s.id === this.tab);
     return html`<aside aria-label="Configuration">
-      ${SECTIONS.map(
-        (s) => html`<details ?open=${s.id === this.tab}>
+      ${FEATURES.map((s) => {
+        const key = featureOf(s);
+        return html`<details ?open=${current ? featureOf(current) === key : false}>
           <summary>
-            <input type="checkbox" aria-label=${`Enable ${s.label}`} .checked=${this.enabled[s.id] ?? true} @click=${(e: Event) => e.stopPropagation()} @change=${(e: Event) => void this.#toggleFeature(s.id, (e.target as HTMLInputElement).checked)} />
+            <input type="checkbox" aria-label=${`Enable ${s.label}`} .checked=${this.enabled[key] ?? true} @click=${(e: Event) => e.stopPropagation()} @change=${(e: Event) => void this.#toggleFeature(key, (e.target as HTMLInputElement).checked)} />
             ${s.label}
           </summary>
-          <config-form .schema=${s.schema} .value=${{ ...s.defaults, ...this.#configs[s.id] }} @config-change=${(e: CustomEvent<{ value: Record<string, unknown> }>) => this.#changeFeature(s.id, e.detail.value)}></config-form>
-        </details>`,
-      )}
+          <config-form .schema=${s.schema} .value=${{ ...s.defaults, ...this.#configs[key] }} @config-change=${(e: CustomEvent<{ value: Record<string, unknown> }>) => this.#changeFeature(key, e.detail.value)}></config-form>
+        </details>`;
+      })}
     </aside>`;
   }
 

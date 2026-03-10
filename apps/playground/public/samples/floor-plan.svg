@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700">
+  <title>Floor plan of a campsite shop with reception, gear, office, counter and storage</title>
+  <rect width="1000" height="700" fill="#f4f1ea"/>
+  <g fill="none" stroke="#3d3a33" stroke-width="8" stroke-linejoin="round">
+    <rect x="60" y="60" width="880" height="580"/>
+    <path d="M60 330H380M500 330H940M380 60V330M640 330V640M640 470H940M640 330V400"/>
+  </g>
+  <g fill="#e1ddd2" stroke="#3d3a33" stroke-width="2">
+    <rect x="90" y="90" width="190" height="90"/><rect x="420" y="90" width="120" height="120" rx="60"/>
+    <rect x="700" y="100" width="200" height="80"/><rect x="100" y="400" width="240" height="60"/>
+    <rect x="700" y="520" width="200" height="90"/>
+  </g>
+  <g font-family="system-ui, sans-serif" font-size="22" fill="#3d3a33" font-weight="600" text-anchor="middle">
+    <text x="185" y="140">Reception</text><text x="480" y="156">Gear</text><text x="800" y="146">Office</text>
+    <text x="220" y="438">Shop counter</text><text x="800" y="570">Storage</text>
+  </g>
+  <g stroke="#f4f1ea" stroke-width="10"><path d="M380 330H500M640 400V470"/></g>
+</svg>
