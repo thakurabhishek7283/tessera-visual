@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640">
+  <title>Illustration of camping gear on three shelves: tents, sleeping gear and cooking gear</title>
+  <rect width="1000" height="640" fill="#dfe6ee"/>
+  <rect x="40" y="90" width="920" height="26" fill="#8a6a45"/><rect x="40" y="290" width="920" height="26" fill="#8a6a45"/><rect x="40" y="490" width="920" height="26" fill="#8a6a45"/>
+  <g>
+    <path d="M90 90l70-70 70 70z" transform="translate(0 0)" fill="#e9722e"/>
+    <rect x="300" y="30" width="120" height="60" rx="10" fill="#2e86c1"/><rect x="320" y="14" width="80" height="20" rx="8" fill="#1b5a85"/>
+    <circle cx="540" cy="52" r="38" fill="#c0392b"/><rect x="520" y="14" width="40" height="14" fill="#7b241c"/>
+    <rect x="640" y="40" width="90" height="50" rx="8" fill="#27ae60"/><rect x="770" y="30" width="120" height="60" rx="6" fill="#8e5bb5"/>
+  </g>
+  <g>
+    <rect x="80" y="210" width="160" height="80" rx="40" fill="#f1c40f"/><rect x="290" y="190" width="30" height="100" fill="#555"/>
+    <rect x="360" y="230" width="120" height="60" rx="8" fill="#16a085"/><path d="M520 290l60-90 60 90z" fill="#d35400"/>
+    <rect x="700" y="214" width="200" height="76" rx="12" fill="#34495e"/>
+  </g>
+  <g>
+    <rect x="90" y="420" width="90" height="70" rx="8" fill="#c0392b"/><rect x="230" y="400" width="26" height="90" fill="#7f8c8d"/>
+    <rect x="300" y="430" width="140" height="60" rx="10" fill="#2980b9"/><circle cx="560" cy="452" r="38" fill="#f39c12"/>
+    <rect x="650" y="410" width="110" height="80" rx="8" fill="#27ae60"/><rect x="810" y="440" width="100" height="50" rx="8" fill="#9b59b6"/>
+  </g>
+  <g font-family="system-ui, sans-serif" font-size="20" fill="#2c3e50" font-weight="600">
+    <text x="48" y="150">Tents</text><text x="48" y="350">Sleeping</text><text x="48" y="550">Cooking</text>
+  </g>
+</svg>

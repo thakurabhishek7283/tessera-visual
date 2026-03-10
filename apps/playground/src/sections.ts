@@ -1,14 +1,18 @@
 import type { PluginLoader, TesseraInstance } from '@tessera/core';
-import { html, type TemplateResult } from 'lit';
-import { z } from 'zod';
+import type { TemplateResult } from 'lit';
+import type { z } from 'zod';
+import { annotateSection } from './sections/annotate.js';
 
 /** One kit in the playground: its plugin, its option schema and what it shows. */
 export interface Section {
   id: string;
   label: string;
+  /** The feature this tab shows, when it is not named like the tab (the whiteboard is `annotator`). */
+  feature?: string;
   /** What the section demonstrates, shown above it. */
   blurb: string;
-  schema: z.ZodType;
+  /** Options of the feature. Only the first tab of a feature needs it: it makes the config panel. */
+  schema?: z.ZodType;
   load: PluginLoader;
   /** Defaults on top of `{ enabled: true }`. */
   defaults?: Record<string, unknown>;
@@ -20,14 +24,13 @@ export interface SectionContext {
   user: string;
 }
 
-const overview: Section = {
-  id: 'overview',
-  label: 'Overview',
-  blurb: 'The kits of this repository appear here as they are built.',
-  schema: z.object({ enabled: z.boolean() }),
-  load: () => Promise.reject(new Error('The overview has no plugin')),
-  render: () => html`<p>Image annotation, a whiteboard and maps.</p>`,
-};
+import { whiteboardSection } from './sections/whiteboard.js';
 
-/** One entry per kit, in tab order. */
-export const SECTIONS: Section[] = [overview];
+/** One entry per tab, in order. */
+export const SECTIONS: Section[] = [annotateSection, whiteboardSection];
+
+/** The tabs that own a feature: one config panel and one plugin each. */
+export const FEATURES: Section[] = SECTIONS.filter((s) => s.schema);
+
+/** The feature id a tab shows. */
+export const featureOf = (s: Section): string => s.feature ?? s.id;
