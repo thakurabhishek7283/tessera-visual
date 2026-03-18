@@ -48,11 +48,12 @@
     }
   },
   "scripts": {
-    "build": "tsdown",
+    "build": "node scripts/sync-maplibre-css.mjs && tsdown",
     "dev": "tsdown --watch",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
-    "test:browser": "vitest run --config vitest.browser.config.ts"
+    "test:browser": "vitest run --config vitest.browser.config.ts",
+    "sync-css": "node scripts/sync-maplibre-css.mjs"
   },
   "publishConfig": {
     "access": "public"

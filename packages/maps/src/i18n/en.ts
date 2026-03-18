@@ -1,0 +1,23 @@
+/** Default English strings. Override any key through `config.messages.en`. */
+export const en: Record<string, string> = {
+  'map.label': 'Map',
+  'map.loading': 'Loading map',
+  'map.error': 'The map could not be loaded.',
+  'map.markers.one': '1 place on the map',
+  'map.markers.other': '{count} places on the map',
+  'map.cluster': '{count} places, zoom in to see them',
+  'picker.label': 'Location',
+  'picker.search': 'Search for an address or place',
+  'picker.search.hint': 'Type at least two letters, then use the arrow keys to choose a result.',
+  'picker.results.one': '1 result',
+  'picker.results.other': '{count} results',
+  'picker.none': 'No results',
+  'picker.searching': 'Searching',
+  'picker.failed': 'Search is not available right now.',
+  'picker.chosen': 'Chosen: {label}',
+  'picker.coordinates': '{lat}, {lng}',
+  'picker.clear': 'Clear the location',
+  'picker.empty': 'No location chosen. Search, or click the map.',
+  'picker.pin': 'Chosen location',
+  'picker.dropped': 'Dropped pin',
+};
