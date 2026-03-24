@@ -46,6 +46,7 @@ export async function createMap(
     throw new TesseraError('UNKNOWN', 'The map library could not be loaded', { cause: error });
   });
   injectCss(el.getRootNode() as Document | ShadowRoot, css);
+  if (config.workerUrl) lib.setWorkerUrl?.(config.workerUrl);
 
   const container = document.createElement('div');
   container.style.cssText = 'position:absolute;inset:0;';
@@ -327,6 +328,9 @@ export async function createMap(
     closePopup,
     resize() {
       map.resize();
+    },
+    setLabel(label) {
+      map.getCanvas().setAttribute('aria-label', label);
     },
     raw: () => map as unknown,
     destroy() {

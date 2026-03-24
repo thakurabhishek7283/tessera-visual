@@ -49,6 +49,8 @@ export interface MapHandle {
   closePopup(): void;
   /** Tells the map its container changed size. */
   resize(): void;
+  /** Sets the accessible name of the map (its canvas is the one region assistive technology sees). */
+  setLabel(label: string): void;
   /** The underlying MapLibre map, as an escape hatch. */
   raw(): unknown;
   destroy(): void;

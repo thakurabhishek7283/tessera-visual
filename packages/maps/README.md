@@ -21,6 +21,7 @@ Work in progress.
 | `controls.geolocate` | `boolean` | `true` |  |
 | `controls.fullscreen` | `boolean` | `false` |  |
 | `controls.scale` | `boolean` | `false` |  |
+| `workerUrl` | `string` | – | URL of maplibre-gl-worker.mjs. Needed when your bundler moves MapLibre away from its worker file (Vite: import it with `?url`). |
 | `attribution` | `true` | `true` | Always on: the tile and data licences require it. |
 
 <!-- config:end -->
