@@ -44,9 +44,29 @@
     ]
   },
   {
-    "name": "@tessera/maps \u2014 entry + plugin",
-    "path": ["packages/maps/dist/index.js"],
-    "limit": "10 kB",
+    "name": "@tessera/maps \u2014 entry + plugin (MapLibre and its stylesheet are lazy chunks, counted below)",
+    "path": ["packages/maps/dist/index.js", "packages/maps/dist/plugin-*.js"],
+    "limit": "20 kB",
+    "gzip": true,
+    "ignore": [
+      "@tessera/core",
+      "@tessera/elements",
+      "@tessera/storage",
+      "@tessera/transport",
+      "@tessera/protocol",
+      "@tessera/react",
+      "lit",
+      "@lit/context",
+      "zod",
+      "react",
+      "react/jsx-runtime",
+      "maplibre-gl"
+    ]
+  },
+  {
+    "name": "@tessera/maps \u2014 elements (everything they can load, the lazy plugin included; MapLibre itself excluded)",
+    "path": ["packages/maps/dist/elements/index.js"],
+    "limit": "26 kB",
     "gzip": true,
     "ignore": [
       "@tessera/core",

@@ -23,6 +23,5 @@ Work in progress.
 | `freehand.smoothing` | `number` | `0.5` |  |
 | `freehand.streamline` | `number` | `0.5` |  |
 | `persistence` | `"none" \| "storage"` | `"storage"` | `storage` keeps each set in the `annotator.sets` collection, keyed by `set-id` or the image URL. |
-| `minimap` | `boolean` | `false` | Show an overview of the whole surface in a corner. |
 
 <!-- config:end -->
