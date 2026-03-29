@@ -2,7 +2,7 @@ import { defineConfig } from 'tsdown';
 
 export default defineConfig([
   {
-    entry: ['src/index.ts', 'src/elements/index.ts'],
+    entry: ['src/index.ts', 'src/elements/index.ts', 'src/react/index.ts'],
     format: 'esm',
     dts: true,
     // `pnpm build` empties dist first: two configs would otherwise clean each other's output.

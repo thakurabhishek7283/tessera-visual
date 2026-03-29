@@ -40,7 +40,8 @@ export class TesseraLocationPicker extends TesseraElement {
   static formAssociated = true;
   static override properties: PropertyDeclarations = {
     value: { attribute: false },
-    name: {},
+    // Reflected: a form submits by the attribute, and frameworks set the property.
+    name: { reflect: true },
     label: {},
     required: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
