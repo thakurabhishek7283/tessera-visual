@@ -63,6 +63,8 @@ export interface MapLibreModule {
   FullscreenControl: new (options?: Record<string, unknown>) => unknown;
   ScaleControl: new (options?: Record<string, unknown>) => unknown;
   AttributionControl: new (options?: Record<string, unknown>) => unknown;
+  /** MapLibre 4+: where the web worker script is. */
+  setWorkerUrl?(url: string): void;
 }
 
 export interface LoadedMapLibre {

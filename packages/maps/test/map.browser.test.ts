@@ -337,6 +337,12 @@ describe('view', () => {
     expect(map.calls).toContainEqual(['resize']);
   });
 
+  it('names the map for assistive technology', async () => {
+    const { handle, map } = await open();
+    handle.setLabel('Campsites');
+    expect(map.canvas.getAttribute('aria-label')).toBe('Campsites');
+  });
+
   it('hands out the underlying map', async () => {
     const { handle, map } = await open();
     expect(handle.raw()).toBe(map);

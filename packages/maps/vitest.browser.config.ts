@@ -11,6 +11,8 @@ export default defineConfig({
   resolve: { dedupe: ['lit', '@lit/context', 'react', 'react-dom'] },
   optimizeDeps: {
     include: ['lit', 'vitest/browser', 'zod'],
+    // MapLibre starts its web worker from a file next to its own module, which pre-bundling moves.
+    exclude: ['maplibre-gl'],
   },
   test: {
     include: ['test/**/*.browser.test.{ts,tsx}'],

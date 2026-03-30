@@ -49,6 +49,12 @@ export const MapsConfig = z.object({
     })
     .default({ navigation: true, geolocate: true, fullscreen: false, scale: false })
     .describe('Map controls to show.'),
+  workerUrl: z
+    .string()
+    .optional()
+    .describe(
+      'URL of maplibre-gl-worker.mjs. Needed when your bundler moves MapLibre away from its worker file (Vite: import it with `?url`).',
+    ),
   attribution: z
     .literal(true)
     .default(true)
