@@ -1,8 +1,9 @@
+import { rectCenter, rotatePoint } from '../geometry/bbox.js';
 import type { Geometry, Point } from '../geometry/model.js';
 import { type HandleDir, handlePosition, RESIZE_HANDLES } from '../geometry/transform.js';
 
 export interface Handle {
-  kind: 'resize' | 'vertex' | 'midpoint';
+  kind: 'resize' | 'vertex' | 'midpoint' | 'rotate';
   /** World position. */
   at: Point;
   /** `resize` handles: which edges move. */
@@ -18,15 +19,27 @@ const resizeCursor = (d: HandleDir): string => {
   return d.sx === d.sy ? 'nwse-resize' : 'nesw-resize';
 };
 
-/** The grips shown when exactly one shape is selected. */
-export function computeHandles(g: Geometry): Handle[] {
+/** How far the rotation grip floats above the top edge, in screen pixels. */
+export const ROTATE_OFFSET_PX = 26;
+
+/**
+ * The grips shown when exactly one shape is selected. `scale` is the current zoom: the rotation
+ * grip keeps a fixed distance on screen from the shape.
+ */
+export function computeHandles(g: Geometry, scale = 1): Handle[] {
   if (g.type === 'rect' || g.type === 'ellipse') {
-    return RESIZE_HANDLES.map((dir) => ({
+    const resize = RESIZE_HANDLES.map((dir) => ({
       kind: 'resize' as const,
       at: handlePosition(g, dir),
       dir,
       cursor: resizeCursor(dir),
     }));
+    if (g.type !== 'rect') return resize;
+    // In the rectangle's own frame the grip sits above the middle of the top edge; rotating that
+    // point about the centre puts it where the shape is turned to.
+    const above: Point = [g.x + g.w / 2, g.y - ROTATE_OFFSET_PX / scale];
+    const away = rotatePoint(above, g.rotation ?? 0, rectCenter(g));
+    return [...resize, { kind: 'rotate' as const, at: away, cursor: 'grab' }];
   }
   if (g.type === 'polygon' || g.type === 'polyline') {
     const n = g.points.length;

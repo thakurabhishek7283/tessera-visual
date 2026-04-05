@@ -190,6 +190,19 @@ describe('Renderer', () => {
     expect(renderer.overlay.querySelectorAll('rect.handle.midpoint')).toHaveLength(3);
   });
 
+  it('shows a round rotation grip with a stem above a selected rectangle only', () => {
+    const { engine, renderer } = mount();
+    const box = put(engine, rectOf(100, 100, 50, 50));
+    const ring = put(engine, { type: 'ellipse', cx: 300, cy: 300, rx: 20, ry: 20 });
+    engine.selection.set([box.id]);
+    renderer.flush();
+    expect(renderer.overlay.querySelectorAll('circle.handle.rotate')).toHaveLength(1);
+    expect(renderer.overlay.querySelectorAll('line.stem')).toHaveLength(1);
+    engine.selection.set([ring.id]);
+    renderer.flush();
+    expect(renderer.overlay.querySelectorAll('circle.handle.rotate')).toHaveLength(0);
+  });
+
   it('shows no grips for several shapes, a locked shape or in read-only mode', () => {
     const { engine, renderer } = mount();
     const a = put(engine, rectOf(0, 0, 10, 10));

@@ -350,3 +350,73 @@ describe('select tool: text', () => {
     expect(geometryOf(engine, t)).toMatchObject({ text: 'b' });
   });
 });
+
+describe('select tool: rotating', () => {
+  const rotateGrip = (engine: E, a: Annotation) => handle(engine, a, (h) => h.kind === 'rotate');
+
+  it('offers a rotation grip above a rectangle, a fixed distance on screen, and not on other shapes', () => {
+    const { engine } = toolEngine();
+    const a = put(engine, rectOf(100, 100, 100, 60));
+    const grip = computeHandles(a.geometry, 1).find((h) => h.kind === 'rotate');
+    expect(grip?.at).toEqual([150, 74]);
+    expect(computeHandles(a.geometry, 2).find((h) => h.kind === 'rotate')?.at).toEqual([150, 87]);
+    const ellipse = put(engine, { type: 'ellipse', cx: 50, cy: 50, rx: 20, ry: 10 });
+    expect(computeHandles(ellipse.geometry).some((h) => h.kind === 'rotate')).toBe(false);
+  });
+
+  it('turns the rectangle with the pointer, around its centre', () => {
+    const { engine } = toolEngine();
+    const a = put(engine, rectOf(100, 100, 100, 60));
+    engine.selection.set([a.id]);
+    // The centre is (150, 130); dragging the grip to its right means a quarter turn clockwise.
+    drag(engine, rotateGrip(engine, a).at, [250, 130]);
+    const g = geometryOf(engine, a);
+    expect(g).toMatchObject({ type: 'rect', x: 100, y: 100, w: 100, h: 60 });
+    expect((g as { rotation: number }).rotation).toBeCloseTo(90, 0);
+  });
+
+  it('snaps to 15 degrees with shift, and removes the rotation property at zero', () => {
+    const { engine } = toolEngine();
+    const a = put(engine, rectOf(100, 100, 100, 60));
+    engine.selection.set([a.id]);
+    drag(engine, rotateGrip(engine, a).at, [200, 90, { shift: true }]);
+    const rotation = (geometryOf(engine, a) as { rotation?: number }).rotation;
+    expect((rotation as number) % 15).toBe(0);
+    expect(rotation).not.toBe(0);
+    const turned = engine.store.get(a.id) as Annotation;
+    drag(engine, rotateGrip(engine, turned).at, [150, 20]);
+    expect(geometryOf(engine, a)).not.toHaveProperty('rotation');
+  });
+
+  it('is one undo step, and the grip follows the turned shape', async () => {
+    const { engine } = toolEngine();
+    const a = put(engine, rectOf(100, 100, 100, 60));
+    engine.selection.set([a.id]);
+    drag(engine, rotateGrip(engine, a).at, [200, 90], [250, 130]);
+    const turned = engine.store.get(a.id) as Annotation;
+    const grip = rotateGrip(engine, turned).at;
+    expect(grip[0]).toBeGreaterThan(200);
+    expect(Math.abs(grip[1] - 130)).toBeLessThan(2);
+    await engine.history.undo();
+    expect(geometryOf(engine, a)).toEqual(a.geometry);
+  });
+
+  it('keeps resizing in the shape’s own frame after a turn', () => {
+    const { engine } = toolEngine();
+    const a = put(engine, { type: 'rect', x: 100, y: 100, w: 100, h: 60, rotation: 90 });
+    engine.selection.set([a.id]);
+    const east = handle(engine, a, (h) => h.kind === 'resize' && h.dir?.sx === 1 && h.dir.sy === 0);
+    // The east edge of a shape turned a quarter clockwise now faces down.
+    expect(east.at[1]).toBeGreaterThan(130);
+    drag(engine, east.at, [east.at[0], east.at[1] + 40]);
+    expect(geometryOf(engine, a)).toMatchObject({ w: 140, h: 60, rotation: 90 });
+  });
+
+  it('does not rotate a locked shape', () => {
+    const { engine } = toolEngine();
+    const a = put(engine, rectOf(100, 100, 100, 60), { locked: true });
+    engine.selection.set([a.id]);
+    drag(engine, [150, 74], [250, 130]);
+    expect(geometryOf(engine, a)).toEqual(a.geometry);
+  });
+});
