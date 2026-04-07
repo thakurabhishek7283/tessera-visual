@@ -24,10 +24,12 @@ export interface SectionContext {
   user: string;
 }
 
+import { mapsSection } from './sections/maps.js';
+import { pickerSection } from './sections/picker.js';
 import { whiteboardSection } from './sections/whiteboard.js';
 
 /** One entry per tab, in order. */
-export const SECTIONS: Section[] = [annotateSection, whiteboardSection];
+export const SECTIONS: Section[] = [annotateSection, whiteboardSection, mapsSection, pickerSection];
 
 /** The tabs that own a feature: one config panel and one plugin each. */
 export const FEATURES: Section[] = SECTIONS.filter((s) => s.schema);

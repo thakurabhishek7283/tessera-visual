@@ -31,6 +31,7 @@ jobs:
       - run: pnpm build
       - run: pnpm size
       - run: node scripts/gen-config-docs.mjs --check
+      - run: node packages/maps/scripts/sync-maplibre-css.mjs --check
 
   browser:
     name: Component and end-to-end tests
