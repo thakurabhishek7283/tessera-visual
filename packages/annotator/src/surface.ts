@@ -144,6 +144,7 @@ export async function createSurface(
     tool: engine.tools.active,
     history: engine.history,
     view: engine.viewport.state,
+    viewSize: engine.viewport.size,
     drawStyle: engine.drawStyle,
     setTool: (id) => {
       engine.tools.setTool(id);
@@ -161,6 +162,8 @@ export async function createSurface(
     fit: () => engine.fit(),
     zoomBy: (factor) => engine.viewport.zoomBy(factor),
     zoomTo: (id) => engine.zoomTo(id),
+    panTo: (x, y) => engine.centerOn(x, y),
+    contentRect: () => engine.contentRect(),
     setVisible: (id, visible) => engine.update(id, { hidden: !visible }),
     exportW3C: () => exportW3C(engine.annotations.get(), source),
     importW3C: (list, mode) => {

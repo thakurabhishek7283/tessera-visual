@@ -338,6 +338,22 @@ describe('shortcuts', () => {
     expect(engine.store.list.get().map((x) => x.id)).toEqual([a.id, b.id]);
   });
 
+  it('moves the view with the arrow keys when nothing is selected', () => {
+    const { engine } = setup();
+    handleShortcut(engine, key('ArrowRight'));
+    handleShortcut(engine, key('ArrowDown', { shift: true }));
+    // The content moves the other way, as when scrolling.
+    expect(engine.viewport.state.get()).toMatchObject({ tx: -40, ty: -160 });
+  });
+
+  it('centres the view on a world point without changing the zoom', () => {
+    const { engine } = setup();
+    engine.viewport.set({ scale: 2, tx: 0, ty: 0 });
+    engine.centerOn(500, 300);
+    expect(engine.viewport.state.get().scale).toBe(2);
+    expect(engine.viewport.worldToScreen([500, 300])).toEqual([400, 300]);
+  });
+
   it('Escape clears the selection, then returns to the select tool', () => {
     const { engine } = setup();
     const a = put(engine, rectOf(0, 0, 10, 10));

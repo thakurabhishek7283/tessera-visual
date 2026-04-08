@@ -79,6 +79,10 @@ export const AnnotatorConfig = z.object({
     })
     .default({ size: 6, thinning: 0.5, smoothing: 0.5, streamline: 0.5 })
     .describe('Brush of the freehand tool, passed to perfect-freehand.'),
+  minimap: z
+    .boolean()
+    .default(false)
+    .describe('Show an overview of the whole surface in a corner; drag in it to move the view.'),
   persistence: z
     .enum(['none', 'storage'])
     .default('storage')

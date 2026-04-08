@@ -22,6 +22,7 @@ Work in progress.
 | `freehand.thinning` | `number` | `0.5` |  |
 | `freehand.smoothing` | `number` | `0.5` |  |
 | `freehand.streamline` | `number` | `0.5` |  |
+| `minimap` | `boolean` | `false` | Show an overview of the whole surface in a corner; drag in it to move the view. |
 | `persistence` | `"none" \| "storage"` | `"storage"` | `storage` keeps each set in the `annotator.sets` collection, keyed by `set-id` or the image URL. |
 
 <!-- config:end -->
