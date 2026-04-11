@@ -10,7 +10,16 @@ const executablePath =
 export default defineConfig({
   resolve: { dedupe: ['lit', '@lit/context', 'react', 'react-dom'] },
   optimizeDeps: {
-    include: ['lit', 'vitest/browser', 'zod'],
+    // Listed so Vite does not discover them mid-run and reload the page under a test.
+    include: [
+      'lit',
+      'vitest/browser',
+      'zod',
+      'react',
+      'react-dom/client',
+      'react/jsx-runtime',
+      'react/jsx-dev-runtime',
+    ],
   },
   test: {
     include: ['test/**/*.browser.test.{ts,tsx}'],
