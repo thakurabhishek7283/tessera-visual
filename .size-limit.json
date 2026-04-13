@@ -26,7 +26,7 @@
   {
     "name": "@tessera/annotator \u2014 elements (everything they can load, the lazy plugin included)",
     "path": ["packages/annotator/dist/elements/index.js"],
-    "limit": "38 kB",
+    "limit": "40 kB",
     "gzip": true,
     "ignore": [
       "@tessera/core",

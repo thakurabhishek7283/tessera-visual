@@ -238,7 +238,7 @@ export class TesseraAnnotatorToolbar extends TesseraElement {
                     type="button"
                     role="radio"
                     data-roving
-                    data-color=${c}
+                    data-color=${c === INK ? 'ink' : c}
                     aria-checked=${currentColor === c ? 'true' : 'false'}
                     aria-label=${c === INK ? 'ink' : c}
                     tabindex="-1"

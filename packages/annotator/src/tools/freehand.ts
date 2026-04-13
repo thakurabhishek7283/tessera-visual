@@ -8,7 +8,7 @@ type Sample = [number, number, number];
 function brushSize(ctx: ToolContext): number {
   const { engine } = ctx;
   return engine.mode === 'board'
-    ? Math.max(1, (engine.drawStyle.get().strokeWidth ?? 3) * 2)
+    ? Math.max(1, (engine.drawStyle.get().strokeWidth ?? 4) * 2)
     : engine.config.freehand.size;
 }
 

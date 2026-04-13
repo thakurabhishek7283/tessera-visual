@@ -282,6 +282,28 @@ describe('Renderer', () => {
     expect(measured.w).toBeCloseTo(painted?.width ?? 0, 0);
   });
 
+  it('pans and zooms 2000 shapes by changing one transform, within a frame budget', () => {
+    const { engine, renderer } = mount();
+    const shapes = Array.from({ length: 2000 }, (_, i) => ({
+      geometry: rectOf((i % 50) * 30, Math.floor(i / 50) * 30, 20, 20),
+    }));
+    engine.store.add(shapes);
+    renderer.flush();
+    const painted = [...renderer.shapes.children];
+    expect(painted).toHaveLength(2000);
+    const start = performance.now();
+    for (let i = 0; i < 120; i++) {
+      engine.viewport.set({ scale: 1 + (i % 20) / 20, tx: i * 3, ty: -i * 2 });
+      renderer.flush();
+    }
+    const perStep = (performance.now() - start) / 120;
+    // Not one shape node was touched while the view moved.
+    expect([...renderer.shapes.children].every((n, i) => n === painted[i])).toBe(true);
+    console.info(`pan/zoom step with 2000 shapes: ${perStep.toFixed(2)} ms`);
+    // A frame is 16 ms; leave room for slow CI machines.
+    expect(perStep).toBeLessThan(8);
+  });
+
   it('removes its layers on destroy', () => {
     const { renderer, svg } = mount();
     renderer.destroy();

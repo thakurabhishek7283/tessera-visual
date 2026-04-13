@@ -532,3 +532,23 @@ describe('<tessera-annotator-minimap>', () => {
     expect(centre[0]).toBeGreaterThan(150);
   });
 });
+
+describe('without any setup', () => {
+  it('a bare <tessera-annotator> switches the feature on in the implicit instance and works', async () => {
+    const { resetDefaultInstance } = await import('@tessera/elements');
+    resetDefaultInstance();
+    const host = document.createElement('div');
+    host.style.width = '800px';
+    document.body.append(host);
+    host.innerHTML = `<tessera-annotator src="${image()}" set-id="bare"></tessera-annotator>`;
+    const el = must(host.firstElementChild as TesseraAnnotatorElement);
+    const handle = await until(() => el.handle, 8000);
+    handle.add({ geometry: { type: 'point', x: 5, y: 5 }, bodies: [] });
+    expect(handle.annotations.get()).toHaveLength(1);
+    await settle(el);
+    expect(
+      el.shadowRoot?.querySelector('tessera-annotation-list')?.shadowRoot?.querySelectorAll('.row'),
+    ).toHaveLength(1);
+    resetDefaultInstance();
+  });
+});
