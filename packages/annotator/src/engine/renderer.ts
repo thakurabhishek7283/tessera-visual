@@ -25,6 +25,7 @@ const OVERLAY_STYLE: Record<string, string> = {
   locked: 'stroke:var(--tessera-color-text-muted, #475569)',
   handle: `fill:${BG};stroke:${PRIMARY};stroke-width:1.5`,
   midpoint: `fill:${PRIMARY};opacity:0.55;stroke:${BG};stroke-width:1`,
+  stem: `stroke:${PRIMARY};stroke-width:1.5`,
   marquee: `fill:${PRIMARY};fill-opacity:0.1;stroke:${PRIMARY};stroke-width:1;stroke-dasharray:4 3`,
   snap: 'fill:none;stroke:var(--tessera-color-warning, #92400e);stroke-width:2',
   'grid-dot': 'fill:var(--tessera-color-border, #6b7686);opacity:0.45',
@@ -288,8 +289,30 @@ export class Renderer {
     }
     const only = selected.length === 1 ? engine.store.get(selected[0] as string) : undefined;
     if (only && engine.canEdit && !only.locked && !only.hidden) {
-      for (const h of computeHandles(engine.effective(only).geometry)) {
+      const handles = computeHandles(
+        engine.effective(only).geometry,
+        engine.viewport.state.get().scale,
+      );
+      for (const h of handles) {
         const [x, y] = to(h.at);
+        if (h.kind === 'rotate') {
+          // A short stem from the shape's top edge to the round grip.
+          const grips = handles.filter(
+            (g) => g.kind === 'resize' && g.dir?.sx === 0 && g.dir.sy === -1,
+          );
+          const edge = grips[0] ? to(grips[0].at) : [x, y];
+          this.overlay.append(
+            svgEl('line', {
+              class: 'stem',
+              x1: edge[0] as number,
+              y1: edge[1] as number,
+              x2: x,
+              y2: y,
+            }),
+            svgEl('circle', { class: 'handle rotate', cx: x, cy: y, r: 5 }),
+          );
+          continue;
+        }
         const size = h.kind === 'midpoint' ? 6 : 9;
         this.overlay.append(
           svgEl('rect', {

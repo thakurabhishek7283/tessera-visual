@@ -1,5 +1,5 @@
 import type { Tool, ToolContext } from '../engine/tools.js';
-import { rectFromPoints } from '../geometry/bbox.js';
+import { rectCenter, rectFromPoints } from '../geometry/bbox.js';
 import { dist } from '../geometry/math.js';
 import type { Annotation, Geometry, Point } from '../geometry/model.js';
 import {
@@ -19,6 +19,7 @@ type Mode =
   | { kind: 'move'; origin: Point; targets: Annotation[] }
   | { kind: 'resize'; target: Annotation; handle: Handle }
   | { kind: 'vertex'; target: Annotation; index: number }
+  | { kind: 'rotate'; target: Annotation; center: Point }
   | { kind: 'marquee'; origin: Point; additive: boolean }
   | { kind: 'click' };
 
@@ -51,7 +52,8 @@ export function selectTool(): Tool {
     const target = engine.store.get(ids[0] as string);
     if (!target || target.locked || target.hidden) return undefined;
     let best: { handle: Handle; d: number } | undefined;
-    for (const handle of computeHandles(engine.effective(target).geometry)) {
+    const scale = engine.viewport.state.get().scale;
+    for (const handle of computeHandles(engine.effective(target).geometry, scale)) {
       const d = dist(engine.viewport.worldToScreen(handle.at), screen);
       // Vertices win over midpoints when both are within reach.
       const weight = handle.kind === 'midpoint' ? d + 3 : d;
@@ -79,6 +81,8 @@ export function selectTool(): Tool {
         const { target, handle } = grip;
         if (handle.kind === 'resize') {
           mode = { kind: 'resize', target, handle };
+        } else if (handle.kind === 'rotate' && target.geometry.type === 'rect') {
+          mode = { kind: 'rotate', target, center: rectCenter(target.geometry) };
         } else if (handle.kind === 'vertex') {
           const g = target.geometry;
           if (e.alt && (g.type === 'polygon' || g.type === 'polyline')) {
@@ -153,6 +157,20 @@ export function selectTool(): Tool {
           }
           break;
         }
+        case 'rotate': {
+          const { target, center } = mode;
+          const g = target.geometry;
+          if (g.type !== 'rect') break;
+          // The grip starts straight above the centre, so "up" is zero degrees.
+          let degrees =
+            (Math.atan2(e.world[1] - center[1], e.world[0] - center[0]) * 180) / Math.PI + 90;
+          if (e.shift) degrees = Math.round(degrees / 15) * 15;
+          degrees = ((((degrees + 180) % 360) + 360) % 360) - 180;
+          const rounded = Math.round(degrees * 10) / 10;
+          const { rotation: _old, ...rest } = g;
+          setDraft(ctx, [[target.id, rounded === 0 ? rest : { ...rest, rotation: rounded }]]);
+          break;
+        }
         case 'vertex': {
           const { target, index } = mode;
           const g = target.geometry;
@@ -189,7 +207,13 @@ export function selectTool(): Tool {
       }
       if (current.kind === 'click' || !wasMoved || drafts.size === 0) return;
       const label =
-        current.kind === 'move' ? 'Move' : current.kind === 'resize' ? 'Resize' : 'Edit vertex';
+        current.kind === 'move'
+          ? 'Move'
+          : current.kind === 'resize'
+            ? 'Resize'
+            : current.kind === 'rotate'
+              ? 'Rotate'
+              : 'Edit vertex';
       engine.store.update(
         [...drafts].map(([id, geometry]) => ({ id, patch: { geometry } })),
         label,
