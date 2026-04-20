@@ -10,6 +10,7 @@ import type { AnnotatorApi, AnnotatorHandle } from '../types.js';
 import './label-picker.js';
 import './toolbar.js';
 import './annotation-list.js';
+import './minimap.js';
 import type { LabelChoice } from './label-picker.js';
 
 interface TextEdit {
@@ -124,6 +125,12 @@ export abstract class TesseraSurfaceElement extends TesseraElement {
       }
       .message.error {
         color: var(--tessera-color-danger);
+      }
+      .minimap {
+        position: absolute;
+        inset-inline-start: var(--tessera-space-3);
+        inset-block-end: var(--tessera-space-3);
+        z-index: 2;
       }
       .text-editor {
         position: absolute;
@@ -427,6 +434,11 @@ export abstract class TesseraSurfaceElement extends TesseraElement {
                   @label-pick=${(e: CustomEvent<{ value: string }>) => this.labelAsk?.resolve(e.detail.value)}
                   @label-cancel=${() => this.labelAsk?.resolve(null)}
                 ></tessera-label-picker>`
+              : nothing
+          }
+          ${
+            handle?.config.minimap
+              ? html`<tessera-annotator-minimap class="minimap" .handle=${handle} .image=${this.source}></tessera-annotator-minimap>`
               : nothing
           }
           ${this.textEdit ? this.#textEditor(this.textEdit) : nothing}

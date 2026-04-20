@@ -66,6 +66,12 @@ export function handleShortcut(engine: AnnotatorEngine, e: KeyInput): boolean {
     engine.nudgeSelection(arrow[0] * step, arrow[1] * step);
     return true;
   }
+  if (arrow) {
+    // Nothing selected: the arrow keys move the view, so the canvas can be explored without a mouse.
+    const step = e.shift ? 160 : 40;
+    engine.viewport.panBy(-arrow[0] * step, -arrow[1] * step);
+    return true;
+  }
   if (key === '0') {
     engine.fit();
     return true;

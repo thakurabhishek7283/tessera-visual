@@ -468,3 +468,67 @@ describe('<tessera-whiteboard>', () => {
     await vi.waitFor(() => expect(svg.querySelector('.shapes path')).not.toBeNull());
   });
 });
+
+describe('<tessera-annotator-minimap>', () => {
+  const minimapOf = (el: Element) => el.shadowRoot?.querySelector('tessera-annotator-minimap');
+
+  it('is off unless asked for', async () => {
+    const { el } = await mountAnnotator(
+      `<tessera-annotator src="${image()}" set-id="m0"></tessera-annotator>`,
+    );
+    expect(minimapOf(el)).toBeNull();
+  });
+
+  it('shows the shapes and the visible part, and follows panning', async () => {
+    const { el, handle } = await mountAnnotator(
+      `<tessera-annotator src="${image(1200, 800)}" set-id="m1" no-panel></tessera-annotator>`,
+      { minimap: true },
+    );
+    handle.add({ geometry: { type: 'rect', x: 100, y: 100, w: 200, h: 100 }, bodies: [] });
+    handle.add({ geometry: { type: 'point', x: 600, y: 400 }, bodies: [] });
+    const minimap = await until(() => minimapOf(el));
+    await settle(minimap);
+    const root = must(minimap.shadowRoot);
+    await until(() => root.querySelectorAll('rect.shape').length === 2);
+    expect(root.querySelector('image')).not.toBeNull();
+    expect(root.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
+    // Zoomed in, only a part of the image is visible, and the outline says which.
+    handle.zoomBy(3);
+    await settle(minimap);
+    const view = must(root.querySelector('rect.view'));
+    const before = Number(view.getAttribute('x'));
+    handle.panTo(1000, 700);
+    await settle(minimap);
+    expect(Number(view.getAttribute('x'))).toBeGreaterThan(before);
+    await expectAccessible(el);
+  });
+
+  it('moves the view where it is pressed', async () => {
+    const { el, handle } = await mountAnnotator(
+      `<tessera-annotator src="${image(1200, 800)}" set-id="m2" no-panel></tessera-annotator>`,
+      { minimap: true },
+    );
+    handle.zoomBy(4);
+    const minimap = await until(() => minimapOf(el));
+    await settle(minimap);
+    const svg = must(minimap.shadowRoot?.querySelector('svg')) as SVGSVGElement;
+    const box = svg.getBoundingClientRect();
+    // A press at the top-left quarter of the picture centres the view on the matching world point.
+    svg.dispatchEvent(
+      new PointerEvent('pointerdown', {
+        bubbles: true,
+        clientX: box.left + box.width * 0.25,
+        clientY: box.top + box.height * 0.25,
+        pointerId: 1,
+        pointerType: 'mouse',
+        buttons: 1,
+      }),
+    );
+    const { scale, tx, ty } = handle.view.get();
+    const { w, h } = handle.viewSize.get();
+    const centre = [(w / 2 - tx) / scale, (h / 2 - ty) / scale];
+    expect(centre[0]).toBeLessThan(450);
+    expect(centre[1]).toBeLessThan(300);
+    expect(centre[0]).toBeGreaterThan(150);
+  });
+});

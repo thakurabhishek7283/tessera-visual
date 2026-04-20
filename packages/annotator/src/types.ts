@@ -51,6 +51,8 @@ export interface AnnotatorHandle {
   readonly history: History;
   /** Zoom and pan. */
   readonly view: ReadonlyStore<ViewState>;
+  /** Size of the visible area in pixels. */
+  readonly viewSize: ReadonlyStore<{ w: number; h: number }>;
   /** Style of the next shape. Changing it does not touch existing shapes. */
   readonly drawStyle: Store<Style>;
   setTool(id: ToolId): void;
@@ -62,6 +64,10 @@ export interface AnnotatorHandle {
   fit(): void;
   zoomBy(factor: number): void;
   zoomTo(id: string): void;
+  /** Moves the view so that this world point is in the middle. */
+  panTo(x: number, y: number): void;
+  /** The area the user can look at: the image, or the drawn content of a board. */
+  contentRect(): { x: number; y: number; w: number; h: number };
   setVisible(id: string, visible: boolean): void;
   /** Annotations as W3C Web Annotations targeting `source`. */
   exportW3C(): W3CAnnotation[];

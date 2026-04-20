@@ -406,6 +406,13 @@ export class AnnotatorEngine {
     this.viewport.fit(rect, this.mode === 'image' ? 16 : 48);
   }
 
+  /** Moves the view so that the world point is in the middle, keeping the zoom. */
+  centerOn(x: number, y: number): void {
+    const { w, h } = this.viewport.size.get();
+    const { scale } = this.viewport.state.get();
+    this.viewport.set({ scale, tx: w / 2 - x * scale, ty: h / 2 - y * scale });
+  }
+
   /** Brings an annotation into view and keeps the current zoom when it has no size. */
   zoomTo(id: string): void {
     const a = this.store.get(id);
