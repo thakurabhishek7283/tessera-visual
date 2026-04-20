@@ -1,4 +1,5 @@
 import { createTestInstance } from '@tessera/testing';
+import { until } from '@tessera-internal/test-utils';
 import { afterEach, describe, expect, it } from 'vitest';
 import type { MapsApi } from '../src/index.js';
 import { configureMapLibre } from '../src/maplibre.js';
@@ -69,9 +70,7 @@ describe.skipIf(!webgl)('real MapLibre', () => {
     for (const id of ['tessera-clusters', 'tessera-cluster-counts', 'tessera-points']) {
       expect(map.getLayer(id), id).toBeTruthy();
     }
-    await new Promise((r) => setTimeout(r, 500));
-    const features = map.querySourceFeatures('tessera-markers');
-    expect(features.length).toBeGreaterThan(0);
+    await until(() => map.querySourceFeatures('tessera-markers').length > 0);
     handle.destroy();
   });
 
