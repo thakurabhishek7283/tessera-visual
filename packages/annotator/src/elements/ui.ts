@@ -19,7 +19,7 @@ export const uiStyles = css`
     border-radius: var(--tessera-radius-md);
     cursor: pointer;
   }
-  .btn:hover:not(:disabled) {
+  .btn:hover:not(:disabled):not([aria-pressed='true']) {
     background: var(--tessera-color-surface-2);
   }
   .btn[aria-pressed='true'] {

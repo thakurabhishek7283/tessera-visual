@@ -386,3 +386,18 @@ describe('<tessera-location-picker>', () => {
     expect(fake.markers.at(-1)?.lngLat).toEqual({ lng: 8.5, lat: 47.4 });
   });
 });
+
+describe('without any setup', () => {
+  it('a bare <tessera-map> switches the feature on in the implicit instance and opens a map', async () => {
+    const { resetDefaultInstance } = await import('@tessera/elements');
+    resetDefaultInstance();
+    const host = document.createElement('div');
+    document.body.append(host);
+    host.innerHTML = '<tessera-map></tessera-map>';
+    const el = must(host.firstElementChild as TesseraMapElement);
+    await until(() => fake.maps.length > 0, 8000);
+    await settle(el);
+    expect(el.handle).toBeDefined();
+    resetDefaultInstance();
+  });
+});

@@ -130,7 +130,7 @@ export class AnnotatorEngine {
     );
     this.drawStyle = createStore<Style>(
       this.mode === 'board'
-        ? { stroke: INK, strokeWidth: 3, opacity: 1 }
+        ? { stroke: INK, strokeWidth: 4, opacity: 1 }
         : { stroke: this.#config.labels[0]?.color ?? 'blue', strokeWidth: 2, opacity: 1 },
     );
     this.tools = new ToolManager(this, this.#config.defaultTool);
