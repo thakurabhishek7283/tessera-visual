@@ -1,6 +1,6 @@
 {
   "name": "@tessera/maps",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Maps kit for Tessera: MapLibre map with clustering, popups and a form-associated location picker, no API key needed",
   "license": "MIT",
   "author": "Abhishek Thakur",
