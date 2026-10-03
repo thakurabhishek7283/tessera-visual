@@ -1,6 +1,6 @@
 {
   "name": "@tessera/annotator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Image annotation and whiteboard kit for Tessera: shapes, labels, undo, W3C Web Annotation import and export",
   "license": "MIT",
   "author": "Abhishek Thakur",
