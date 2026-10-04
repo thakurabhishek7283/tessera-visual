@@ -11,3 +11,6 @@ coverage/
 test-results/
 playwright-report/
 .vitest/
+
+# Written by scripts/page-budget.mjs
+budgets/report.json

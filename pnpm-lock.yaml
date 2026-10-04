@@ -29,6 +29,9 @@ importers:
       '@size-limit/preset-small-lib':
         specifier: ^14.1.0
         version: 14.1.0(size-limit@14.1.0)
+      rolldown:
+        specifier: 1.2.12
+        version: 1.2.12
       size-limit:
         specifier: ^14.1.0
         version: 14.1.0
@@ -81,6 +84,27 @@ importers:
       vite:
         specifier: ^8.0.0
         version: 8.3.2(@types/node@26.6.4)(yaml@2.9.1)
+
+  budgets:
+    dependencies:
+      '@tessera-kit/annotator':
+        specifier: workspace:*
+        version: link:../packages/annotator
+      '@tessera-kit/core':
+        specifier: link:../external/tessera/packages/core
+        version: link:../external/tessera/packages/core
+      '@tessera-kit/elements':
+        specifier: link:../external/tessera/packages/elements
+        version: link:../external/tessera/packages/elements
+      '@tessera-kit/maps':
+        specifier: workspace:*
+        version: link:../packages/maps
+      '@tessera-kit/storage':
+        specifier: link:../external/tessera/packages/storage
+        version: link:../external/tessera/packages/storage
+      '@tessera-kit/transport':
+        specifier: link:../external/tessera/packages/transport
+        version: link:../external/tessera/packages/transport
 
   packages/annotator:
     dependencies:

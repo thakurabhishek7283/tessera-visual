@@ -135,6 +135,7 @@ pnpm deps          # clones + builds tessera into external/ (or links ../tessera
 pnpm install
 pnpm dev           # playground at http://localhost:5173
 pnpm check         # lint, typecheck, unit tests, build
+pnpm budget        # page budgets, every dependency included (after a build)
 pnpm test:browser  # component tests in Chromium, including real MapLibre (WebGL, no network)
 pnpm e2e           # playground end to end (tests tagged @network need NETWORK_E2E=1)
 ```
