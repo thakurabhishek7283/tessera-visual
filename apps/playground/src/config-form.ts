@@ -7,7 +7,7 @@ import {
   nothing,
   type PropertyDeclarations,
 } from 'lit';
-import { z } from 'zod';
+import * as z from 'zod/mini';
 
 type Json = Record<string, unknown>;
 interface Node extends Json {
@@ -109,7 +109,7 @@ export class ConfigForm extends LitElement {
     `,
   ];
 
-  schema: z.ZodType | undefined;
+  schema: z.core.$ZodType | undefined;
   value: Json = {};
   errors: Record<string, string> = {};
 

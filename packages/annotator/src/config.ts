@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import * as z from 'zod/mini';
 
 /** Named palette colours. They resolve to `--tessera-annotator-<name>` custom properties. */
 export const TOKEN_COLORS = [
@@ -35,59 +35,81 @@ export type ToolId = (typeof TOOL_IDS)[number];
 export const AnnotatorConfig = z.object({
   enabled: z.boolean(),
   tools: z
-    .array(z.enum(TOOL_IDS))
-    .default(['select', 'rect', 'ellipse', 'polygon', 'arrow', 'freehand', 'point', 'text'])
-    .describe(
-      'Tools offered in the toolbar, in order. `pan` is always available with space or middle mouse.',
+    ._default(z.array(z.enum(TOOL_IDS)), [
+      'select',
+      'rect',
+      'ellipse',
+      'polygon',
+      'arrow',
+      'freehand',
+      'point',
+      'text',
+    ])
+    .check(
+      z.describe(
+        'Tools offered in the toolbar, in order. `pan` is always available with space or middle mouse.',
+      ),
     ),
-  defaultTool: z.enum(TOOL_IDS).default('select').describe('Tool active on start.'),
+  defaultTool: z._default(z.enum(TOOL_IDS), 'select').check(z.describe('Tool active on start.')),
   labels: z
-    .array(z.object({ value: z.string().min(1).max(60), color: TokenColor }))
-    .default([])
-    .describe('Label vocabulary. The label colour becomes the stroke colour of its shapes.'),
+    ._default(
+      z.array(
+        z.object({ value: z.string().check(z.minLength(1), z.maxLength(60)), color: TokenColor }),
+      ),
+      [],
+    )
+    .check(
+      z.describe('Label vocabulary. The label colour becomes the stroke colour of its shapes.'),
+    ),
   requireLabel: z
-    .boolean()
-    .default(false)
-    .describe('Ask for a label after drawing a shape; cancelling discards the shape.'),
+    ._default(z.boolean(), false)
+    .check(z.describe('Ask for a label after drawing a shape; cancelling discards the shape.')),
   allowFreeTextLabels: z
-    .boolean()
-    .default(true)
-    .describe('Let people type labels that are not in the vocabulary.'),
+    ._default(z.boolean(), true)
+    .check(z.describe('Let people type labels that are not in the vocabulary.')),
   comments: z
-    .boolean()
-    .default(true)
-    .describe(
-      'Show a discussion for the selected shape: the `comments` kit when enabled, else a note field.',
+    ._default(z.boolean(), true)
+    .check(
+      z.describe(
+        'Show a discussion for the selected shape: the `comments` kit when enabled, else a note field.',
+      ),
     ),
   readOnly: z
-    .boolean()
-    .default(false)
-    .describe('Show annotations without letting anyone change them.'),
+    ._default(z.boolean(), false)
+    .check(z.describe('Show annotations without letting anyone change them.')),
   snapping: z
-    .object({
-      enabled: z.boolean().default(true),
-      tolerancePx: z.number().min(0).max(40).default(8),
-    })
-    .default({ enabled: true, tolerancePx: 8 })
-    .describe('Snap points to the vertices and edges of other shapes while drawing or editing.'),
+    ._default(
+      z.object({
+        enabled: z._default(z.boolean(), true),
+        tolerancePx: z._default(z.number().check(z.gte(0), z.lte(40)), 8),
+      }),
+      { enabled: true, tolerancePx: 8 },
+    )
+    .check(
+      z.describe('Snap points to the vertices and edges of other shapes while drawing or editing.'),
+    ),
   freehand: z
-    .object({
-      size: z.number().min(1).max(100).default(6),
-      thinning: z.number().min(-1).max(1).default(0.5),
-      smoothing: z.number().min(0).max(1).default(0.5),
-      streamline: z.number().min(0).max(1).default(0.5),
-    })
-    .default({ size: 6, thinning: 0.5, smoothing: 0.5, streamline: 0.5 })
-    .describe('Brush of the freehand tool, passed to perfect-freehand.'),
+    ._default(
+      z.object({
+        size: z._default(z.number().check(z.gte(1), z.lte(100)), 6),
+        thinning: z._default(z.number().check(z.gte(-1), z.lte(1)), 0.5),
+        smoothing: z._default(z.number().check(z.gte(0), z.lte(1)), 0.5),
+        streamline: z._default(z.number().check(z.gte(0), z.lte(1)), 0.5),
+      }),
+      { size: 6, thinning: 0.5, smoothing: 0.5, streamline: 0.5 },
+    )
+    .check(z.describe('Brush of the freehand tool, passed to perfect-freehand.')),
   minimap: z
-    .boolean()
-    .default(false)
-    .describe('Show an overview of the whole surface in a corner; drag in it to move the view.'),
+    ._default(z.boolean(), false)
+    .check(
+      z.describe('Show an overview of the whole surface in a corner; drag in it to move the view.'),
+    ),
   persistence: z
-    .enum(['none', 'storage'])
-    .default('storage')
-    .describe(
-      '`storage` keeps each set in the `annotator.sets` collection, keyed by `set-id` or the image URL.',
+    ._default(z.enum(['none', 'storage']), 'storage')
+    .check(
+      z.describe(
+        '`storage` keeps each set in the `annotator.sets` collection, keyed by `set-id` or the image URL.',
+      ),
     ),
 });
 

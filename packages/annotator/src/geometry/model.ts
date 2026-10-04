@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import * as z from 'zod/mini';
 
 /** A position in world coordinates: image pixels, or whiteboard units. */
 export type Point = [number, number];
@@ -23,41 +23,41 @@ export const GeometrySchema = z.discriminatedUnion('type', [
     type: z.literal('rect'),
     x: num,
     y: num,
-    w: num.min(0),
-    h: num.min(0),
+    w: num.check(z.gte(0)),
+    h: num.check(z.gte(0)),
     /** Degrees, clockwise, around the centre. */
-    rotation: num.optional(),
+    rotation: z.optional(num),
   }),
   z.object({
     type: z.literal('ellipse'),
     cx: num,
     cy: num,
-    rx: num.min(0),
-    ry: num.min(0),
+    rx: num.check(z.gte(0)),
+    ry: num.check(z.gte(0)),
   }),
   /** Closed, at least three points. */
-  z.object({ type: z.literal('polygon'), points: z.array(PointSchema).min(3).max(MAX_POINTS) }),
+  z.object({
+    type: z.literal('polygon'),
+    points: z.array(PointSchema).check(z.minLength(3), z.maxLength(MAX_POINTS)),
+  }),
   z.object({
     type: z.literal('polyline'),
-    points: z.array(PointSchema).min(2).max(MAX_POINTS),
-    arrowStart: z.boolean().optional(),
-    arrowEnd: z.boolean().optional(),
+    points: z.array(PointSchema).check(z.minLength(2), z.maxLength(MAX_POINTS)),
+    arrowStart: z.optional(z.boolean()),
+    arrowEnd: z.optional(z.boolean()),
   }),
   /** `[x, y, pressure]` samples of a brush stroke. */
   z.object({
     type: z.literal('freehand'),
-    points: z
-      .array(z.tuple([num, num, num]))
-      .min(1)
-      .max(MAX_POINTS),
+    points: z.array(z.tuple([num, num, num])).check(z.minLength(1), z.maxLength(MAX_POINTS)),
   }),
   z.object({ type: z.literal('point'), x: num, y: num }),
   z.object({
     type: z.literal('text'),
     x: num,
     y: num,
-    text: z.string().max(MAX_TEXT),
-    fontSize: num.min(1).max(1000),
+    text: z.string().check(z.maxLength(MAX_TEXT)),
+    fontSize: num.check(z.gte(1), z.lte(1000)),
   }),
 ]);
 
@@ -67,32 +67,32 @@ export type GeometryOf<T extends GeometryType> = Extract<Geometry, { type: T }>;
 
 export const BodySchema = z.object({
   purpose: z.enum(['tagging', 'commenting', 'describing']),
-  value: z.string().max(5000),
+  value: z.string().check(z.maxLength(5000)),
 });
 export type Body = z.infer<typeof BodySchema>;
 
-const ColorString = z.string().min(1).max(80);
+const ColorString = z.string().check(z.minLength(1), z.maxLength(80));
 
 /** Appearance. Colours are palette names (`blue`) or any CSS colour. */
 export const StyleSchema = z.object({
-  stroke: ColorString.optional(),
+  stroke: z.optional(ColorString),
   /** `none` draws no fill; anything else (or nothing) draws a light wash. */
-  fill: ColorString.optional(),
-  strokeWidth: num.min(0).max(200).optional(),
-  opacity: num.min(0).max(1).optional(),
+  fill: z.optional(ColorString),
+  strokeWidth: z.optional(num.check(z.gte(0), z.lte(200))),
+  opacity: z.optional(num.check(z.gte(0), z.lte(1))),
 });
 export type Style = z.infer<typeof StyleSchema>;
 
 export const AnnotationSchema = z.object({
-  id: z.string().min(1).max(80),
+  id: z.string().check(z.minLength(1), z.maxLength(80)),
   geometry: GeometrySchema,
-  bodies: z.array(BodySchema).max(100),
-  style: StyleSchema.optional(),
-  createdBy: z.string().max(120).optional(),
+  bodies: z.array(BodySchema).check(z.maxLength(100)),
+  style: z.optional(StyleSchema),
+  createdBy: z.optional(z.string().check(z.maxLength(120))),
   createdAt: z.string(),
   updatedAt: z.string(),
-  hidden: z.boolean().optional(),
-  locked: z.boolean().optional(),
+  hidden: z.optional(z.boolean()),
+  locked: z.optional(z.boolean()),
 });
 
 /** geometry + bodies (tags and comments) + style. */
