@@ -1,6 +1,6 @@
 import type { PluginLoader, TesseraInstance } from '@tessera-kit/core';
 import type { TemplateResult } from 'lit';
-import type { z } from 'zod';
+import type { z } from 'zod/mini';
 import { annotateSection } from './sections/annotate.js';
 
 /** One kit in the playground: its plugin, its option schema and what it shows. */
@@ -12,7 +12,7 @@ export interface Section {
   /** What the section demonstrates, shown above it. */
   blurb: string;
   /** Options of the feature. Only the first tab of a feature needs it: it makes the config panel. */
-  schema?: z.ZodType;
+  schema?: z.core.$ZodType;
   load: PluginLoader;
   /** Defaults on top of `{ enabled: true }`. */
   defaults?: Record<string, unknown>;

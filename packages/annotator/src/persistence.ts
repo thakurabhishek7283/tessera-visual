@@ -1,6 +1,6 @@
 import { type Doc, type TesseraContext, TesseraError, type Unsubscribe } from '@tessera-kit/core';
 import { type Collection, createCollection } from '@tessera-kit/storage';
-import { z } from 'zod';
+import * as z from 'zod/mini';
 import type { AnnotatorEngine, ChangeSet } from './engine/engine.js';
 import { type Annotation, AnnotationSchema } from './geometry/model.js';
 
@@ -10,9 +10,9 @@ const MAX_ATTEMPTS = 5;
 
 export const SetDoc = z.object({
   /** What is annotated: the image URL, or the board id. */
-  source: z.string().max(2000),
-  annotations: z.array(AnnotationSchema).max(5000),
-  deletedIds: z.array(z.object({ id: z.string(), at: z.string() })).max(5000),
+  source: z.string().check(z.maxLength(2000)),
+  annotations: z.array(AnnotationSchema).check(z.maxLength(5000)),
+  deletedIds: z.array(z.object({ id: z.string(), at: z.string() })).check(z.maxLength(5000)),
 });
 export type SetDocValue = z.infer<typeof SetDoc>;
 
