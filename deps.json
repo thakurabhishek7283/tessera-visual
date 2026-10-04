@@ -1,7 +1,7 @@
 {
   "tessera": {
     "url": "https://github.com/thakurabhishek7283/tessera.git",
-    "ref": "main",
+    "ref": "perf/lazy-define",
     "packages": ["core", "elements", "react", "testing", "transport", "storage", "protocol"]
   }
 }
