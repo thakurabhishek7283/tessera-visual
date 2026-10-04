@@ -4,8 +4,9 @@
 //   node scripts/page-budget.mjs --init-missing  also add a budget (today + 3%) for new pages
 //
 // Each `budgets/pages/<name>.ts` is one page. It's bundled with rolldown (the bundler under tsdown
-// and Vite) the way an app would bundle it: minified ESM, code splitting on, nothing external except
-// the host framework (react, react-dom). Every chunk is compressed with gzip (level 9) and brotli
+// and Vite) the way an app would bundle it for production: minified ESM, code splitting on,
+// `process.env.NODE_ENV` set to "production", nothing external except the host framework (react,
+// react-dom). Every chunk is compressed with gzip (level 9) and brotli
 // (quality 11). The report goes to stdout as Markdown and to budgets/report.json; the limits live
 // in budgets/pages.json, in bytes. Run after `pnpm build`, since pages import the built packages.
 //
@@ -118,6 +119,9 @@ async function measure(name, entry) {
     platform: 'browser',
     write: false,
     external: isExternal,
+    // A production app build: bundlers replace process.env.NODE_ENV, so development-only code
+    // (core's full config schema, for one) drops out the way it does for users.
+    transform: { define: { 'process.env.NODE_ENV': '"production"' } },
     output: { format: 'esm', minify: true },
     logLevel: 'warn',
     plugins: [dedupeVersions(), markRegions],

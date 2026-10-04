@@ -19,7 +19,7 @@ When one kit improves another it asks the instance's service registry and works 
 
 ## One kit, four layers
 
-1. **Schemas and config** (`config.ts`, `geometry/model.ts`): zod definitions of the feature options and of the stored documents. The config schema is the single source for the README tables (`scripts/gen-config-docs.mjs`) and for the playground's config form.
+1. **Schemas and config** (`config.ts`, `geometry/model.ts`): zod/mini definitions of the feature options and of the stored documents. The config schema is the single source for the README tables (`scripts/gen-config-docs.mjs`) and for the playground's config form.
 2. **Headless logic**: for the annotator the engine (`engine/`), the tools (`tools/`), persistence and interop; for maps the geocoder, GeoJSON conversion and the MapLibre integration. No element code.
 3. **Plugin and API** (`plugin.ts`, `api.ts`, `surface.ts`): `definePlugin` registers the feature, validates the options and exposes `create(el, options)`, which mounts a surface into any element and returns a handle.
 4. **Elements and React** (`elements/`, `react/`): Lit elements built on `TesseraElement`, and `wrapElement` wrappers with hooks.
