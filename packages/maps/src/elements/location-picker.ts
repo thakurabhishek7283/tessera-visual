@@ -8,6 +8,7 @@ import {
   type PropertyValues,
 } from 'lit';
 import type { GeocodeResult, MapHandle, MapsApi } from '../types.js';
+import { version } from '../version.js';
 import { parseCenter } from './map.js';
 import { MapSession } from './session.js';
 
@@ -37,6 +38,8 @@ const isLocation = (v: unknown): v is LocationValue =>
  * @csspart search @csspart results @csspart map
  */
 export class TesseraLocationPicker extends TesseraElement {
+  static override tesseraVersion: string = version;
+
   static formAssociated = true;
   static override properties: PropertyDeclarations = {
     value: { attribute: false },

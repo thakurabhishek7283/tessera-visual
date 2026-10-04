@@ -92,6 +92,22 @@ export function CampMap() {
 
 On the server the wrappers render an empty tag that upgrades after hydration. In Next.js, import them with `dynamic(() => import(...), { ssr: false })` if you want to avoid the empty tag in the HTML.
 
+## Entry points
+
+| Import | What it does |
+| --- | --- |
+| `@tessera-kit/annotator/elements` | Defines every annotator element. |
+| `@tessera-kit/annotator/elements/<tag>` | Defines one element and the ones it renders, for importing exactly what a page uses: `tessera-annotation-list`, `tessera-annotator`, `tessera-annotator-minimap`, `tessera-annotator-toolbar`, `tessera-label-picker`, `tessera-whiteboard`. |
+| `@tessera-kit/annotator/autoload` | Only registers the tags (156 B gzip). Each element downloads the first time it appears on the page, which suits plain HTML pages. |
+| `@tessera-kit/annotator` | The headless API and the plugin, without elements. |
+| `@tessera-kit/annotator/react` | React components. |
+
+```html
+<script type="module">
+  import '@tessera-kit/annotator/autoload';
+</script>
+```
+
 ## Configuration
 
 <!-- config:start -->

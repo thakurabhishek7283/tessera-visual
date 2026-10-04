@@ -3,6 +3,7 @@ import { type CSSResultGroup, css, html, nothing, type PropertyDeclarations } fr
 import { TOKEN_COLORS, type ToolId } from '../config.js';
 import { INK, resolveColor } from '../engine/color.js';
 import type { AnnotatorHandle } from '../types.js';
+import { version } from '../version.js';
 import { uiStyles } from './ui.js';
 
 const HOTKEYS: Record<ToolId, string> = {
@@ -46,6 +47,8 @@ export function download(blob: Blob, name: string): void {
  * @slot - extra controls at the end
  */
 export class TesseraAnnotatorToolbar extends TesseraElement {
+  static override tesseraVersion: string = version;
+
   static override properties: PropertyDeclarations = {
     handle: { attribute: false },
     pickers: { type: Boolean },

@@ -96,6 +96,22 @@ export function Sites({ sites }: { sites: Array<{ id: string; lng: number; lat: 
 
 On the server the wrappers render an empty tag that upgrades after hydration. In Next.js, import them with `dynamic(() => import(...), { ssr: false })` if you want to avoid the empty tag in the HTML.
 
+## Entry points
+
+| Import | What it does |
+| --- | --- |
+| `@tessera-kit/maps/elements` | Defines every maps element. MapLibre still loads only when a map renders. |
+| `@tessera-kit/maps/elements/<tag>` | Defines one element and the ones it renders, for importing exactly what a page uses: `tessera-location-picker`, `tessera-map`. |
+| `@tessera-kit/maps/autoload` | Only registers the tags (110 B gzip). Each element downloads the first time it appears on the page, which suits plain HTML pages. |
+| `@tessera-kit/maps` | The headless API and the plugin, without elements. |
+| `@tessera-kit/maps/react` | React components. |
+
+```html
+<script type="module">
+  import '@tessera-kit/maps/autoload';
+</script>
+```
+
 ## Configuration
 
 <!-- config:start -->

@@ -1,4 +1,5 @@
 import type { PropertyDeclarations } from 'lit';
+import { version } from '../version.js';
 import { TesseraSurfaceElement } from './surface-element.js';
 
 /**
@@ -10,6 +11,8 @@ import { TesseraSurfaceElement } from './surface-element.js';
  * <tessera-annotator src="/camp-map.jpg" set-id="camp-map"></tessera-annotator>
  */
 export class TesseraAnnotatorElement extends TesseraSurfaceElement {
+  static override tesseraVersion: string = version;
+
   static override properties: PropertyDeclarations = {
     ...TesseraSurfaceElement.properties,
     src: {},

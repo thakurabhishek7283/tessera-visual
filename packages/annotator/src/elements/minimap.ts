@@ -4,6 +4,7 @@ import { resolveColor } from '../engine/color.js';
 import { bboxOf, unionRect } from '../geometry/bbox.js';
 import type { Annotation, Rect } from '../geometry/model.js';
 import type { AnnotatorHandle } from '../types.js';
+import { version } from '../version.js';
 
 /**
  * `<tessera-annotator-minimap>`: the whole surface at a glance, with the visible part outlined.
@@ -11,6 +12,8 @@ import type { AnnotatorHandle } from '../types.js';
  * keyboard, so it is hidden from assistive technology.
  */
 export class TesseraAnnotatorMinimap extends TesseraElement {
+  static override tesseraVersion: string = version;
+
   static override properties: PropertyDeclarations = {
     handle: { attribute: false },
     image: {},
