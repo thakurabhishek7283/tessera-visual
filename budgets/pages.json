@@ -1,0 +1,10 @@
+{
+  "annotator-page": {
+    "initialGzip": 69800,
+    "totalGzip": 109100
+  },
+  "maps-page": {
+    "initialGzip": 60300,
+    "totalGzip": 381200
+  }
+}

@@ -22,3 +22,7 @@ Entry and plugin is the headless engine for the annotator (shapes, history, tool
 - The annotator is above the 30 kB the plan gave the whole package, because the plan's figure left out the UI. Everything the UI needs is separate from the engine: a host that only wants the headless API pays the first column.
 - MapLibre (about 270 kB gzipped) is never in a budget: it is a dependency fetched when the first map opens.
 - A budget failure in CI means a real regression of what users download, not an accounting quirk. Raising a limit needs a note here.
+
+## Update, October 2026: page budgets
+
+The size-limit budgets above ignore peers, so they can't show what a page downloads. `pnpm budget` (`scripts/page-budget.mjs`, copied from `tessera`, see its ADR 6) now also measures realistic pages from `budgets/pages/*.ts` with every dependency included, reports the top packages and any duplicate copies, and fails CI above `budgets/pages.json`. Both kinds of budget run in CI; the baseline is in `docs/perf/baseline-2026-10.md`.

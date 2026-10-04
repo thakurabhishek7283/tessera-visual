@@ -1,0 +1,15 @@
+{
+  "name": "@tessera-internal/budgets",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Page entry files for the page-size budgets (scripts/page-budget.mjs). Not published.",
+  "type": "module",
+  "dependencies": {
+    "@tessera-kit/core": "^0.1.0",
+    "@tessera-kit/elements": "^0.1.0",
+    "@tessera-kit/storage": "^0.1.0",
+    "@tessera-kit/transport": "^0.1.0",
+    "@tessera-kit/annotator": "workspace:*",
+    "@tessera-kit/maps": "workspace:*"
+  }
+}

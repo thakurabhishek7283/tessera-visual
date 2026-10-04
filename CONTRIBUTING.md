@@ -22,6 +22,7 @@ Component and end-to-end tests need Chromium. Install it with `npx playwright in
 | Unit tests | `pnpm test` (add `--filter @tessera-kit/annotator` to narrow) |
 | Component tests in a browser | `pnpm test:browser` |
 | End-to-end tests | `pnpm e2e` (tests that need the network are tagged `@network` and skipped unless `NETWORK_E2E=1`) |
+| Page budgets (what a page pays, all dependencies included) | `pnpm budget` (after `pnpm build`) |
 | Format | `pnpm format` |
 
 ## Conventions
