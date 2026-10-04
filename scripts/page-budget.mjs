@@ -23,6 +23,7 @@ import {
   attribute,
   checkBudgets,
   duplicates,
+  eagerDynamicImports,
   formatReport,
   initialChunks,
   markStatements,
@@ -132,7 +133,16 @@ async function measure(name, entry) {
       handler(level, log);
     },
   });
-  const chunks = out.output.filter((o) => o.type === 'chunk');
+  const chunks = out.output
+    .filter((o) => o.type === 'chunk')
+    .map((chunk) =>
+      Object.assign(chunk, {
+        // A dynamic import that runs at module evaluation downloads with the page: count it.
+        eagerImports: eagerDynamicImports(chunk, (code) => parseAst(code)).filter((file) =>
+          chunk.dynamicImports.includes(file),
+        ),
+      }),
+    );
   const initial = initialChunks(chunks);
 
   const measured = chunks.map((chunk) => {

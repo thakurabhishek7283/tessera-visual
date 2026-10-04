@@ -1,8 +1,10 @@
+import { parseAst } from 'rolldown/parseAst';
 import { describe, expect, it } from 'vitest';
 import {
   attribute,
   checkBudgets,
   duplicates,
+  eagerDynamicImports,
   formatReport,
   initialChunks,
   markStatements,
@@ -152,6 +154,56 @@ describe('initialChunks', () => {
       { fileName: 'lazy.js', isEntry: false, imports: ['shared.js'] },
     ];
     expect([...initialChunks(chunks)].sort()).toEqual(['page.js', 'shared.js']);
+  });
+
+  it('counts chunks that a loaded chunk imports dynamically at evaluation time', () => {
+    const chunks = [
+      { fileName: 'page.js', isEntry: true, imports: ['shared.js'] },
+      { fileName: 'shared.js', isEntry: false, imports: [], eagerImports: ['eager.js'] },
+      { fileName: 'eager.js', isEntry: false, imports: ['dep.js'] },
+      { fileName: 'dep.js', isEntry: false, imports: [] },
+      { fileName: 'lazy.js', isEntry: false, imports: [] },
+    ];
+    expect([...initialChunks(chunks)].sort()).toEqual([
+      'dep.js',
+      'eager.js',
+      'page.js',
+      'shared.js',
+    ]);
+  });
+});
+
+describe('eagerDynamicImports', () => {
+  const find = (code, fileName = 'page.js') =>
+    eagerDynamicImports({ fileName, code }, (c) => parseAst(c));
+
+  it('finds import() calls that run when the module is evaluated', () => {
+    const code = [
+      "void import('./a.js');",
+      "import('./b.js').then((m) => m.define());",
+      "const c = await import('./c.js');",
+      "if (window.x) import('./d.js');",
+      'import(`./e.js`).then((m) => m.define());',
+    ].join('\n');
+    expect(find(code).sort()).toEqual(['a.js', 'b.js', 'c.js', 'd.js', 'e.js']);
+  });
+
+  it('skips loaders: imports inside functions and instance field initialisers', () => {
+    const code = [
+      "register('x', () => import('./a.js'));",
+      "function load() { return import('./b.js'); }",
+      "const o = { m() { return import('./c.js'); } };",
+      "class K { f = import('./d.js'); static s = import('./e.js'); }",
+      'import(variable);',
+      // biome-ignore lint/suspicious/noTemplateCurlyInString: the parsed code is a template literal
+      'import(`./${name}.js`);',
+    ].join('\n');
+    expect(find(code)).toEqual(['e.js']);
+  });
+
+  it('resolves specifiers against the chunk directory', () => {
+    expect(find("void import('../x/y.js');", 'assets/page.js')).toEqual(['x/y.js']);
+    expect(find("void import('./y.js');", 'assets/page.js')).toEqual(['assets/y.js']);
   });
 });
 

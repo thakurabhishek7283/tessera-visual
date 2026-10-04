@@ -3,7 +3,7 @@
 exports[`formatReport > renders the summary table, top packages and duplicates 1`] = `
 "## Page budgets
 
-All dependencies bundled (minified ESM, code splitting on). "Initial" is the entry chunk and its static imports; "total" adds lazy chunks.
+All dependencies bundled (minified ESM, code splitting on). "Initial" is the entry chunk, its static imports and anything they \`import()\` as soon as they run; "total" adds lazy chunks.
 Left out because the host app already pays for them: react, react-dom.
 
 | Page | Initial gzip | Initial brotli | Total gzip | Chunks | Budget (initial gzip) | |

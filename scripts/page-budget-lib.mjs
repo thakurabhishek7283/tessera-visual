@@ -168,17 +168,79 @@ export function duplicates(copies) {
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
-/** The chunks loaded before anything else runs: the entry chunk and its static imports. */
+/**
+ * The chunks a page downloads before it can run: entries, their static imports, and chunks that a
+ * downloaded chunk imports with `import()` while it is evaluated (`eagerImports`, see
+ * {@link eagerDynamicImports}). Those load on every page even though the import is dynamic.
+ *
+ * @param {{ fileName: string, isEntry: boolean, imports: string[], eagerImports?: string[] }[]} chunks
+ * @returns {Set<string>} file names
+ */
 export function initialChunks(chunks) {
   const byFile = new Map(chunks.map((c) => [c.fileName, c]));
   const seen = new Set();
   const visit = (file) => {
     if (seen.has(file) || !byFile.has(file)) return;
     seen.add(file);
-    for (const dep of byFile.get(file).imports) visit(dep);
+    const chunk = byFile.get(file);
+    for (const dep of chunk.imports) visit(dep);
+    for (const dep of chunk.eagerImports ?? []) visit(dep);
   };
   for (const c of chunks) if (c.isEntry) visit(c.fileName);
   return seen;
+}
+
+const FUNCTION_NODES = new Set([
+  'FunctionDeclaration',
+  'FunctionExpression',
+  'ArrowFunctionExpression',
+]);
+
+/**
+ * Finds the `import('…')` calls in a chunk that run when the chunk is evaluated: not inside a
+ * function or a class field initialiser, so nothing has to happen first. `void import('./x.js')` at
+ * the top of a module is one; `() => import('./x.js')` (a loader) is not.
+ *
+ * @param {{ fileName: string, code: string }} chunk
+ * @param {(code: string) => { body: unknown[] }} parse an ESTree parser (rolldown's `parseAst`)
+ * @returns {string[]} the imported chunks' file names, resolved against the chunk's own
+ */
+export function eagerDynamicImports(chunk, parse) {
+  const found = new Set();
+  const dir = chunk.fileName.includes('/') ? chunk.fileName.replace(/\/[^/]*$/, '') : '';
+  const resolveSpec = (spec) => {
+    const parts = dir ? dir.split('/') : [];
+    for (const part of spec.split('/')) {
+      if (part === '..') parts.pop();
+      else if (part !== '.' && part !== '') parts.push(part);
+    }
+    return parts.join('/');
+  };
+  const walk = (node) => {
+    if (!node || typeof node !== 'object') return;
+    if (Array.isArray(node)) {
+      for (const child of node) walk(child);
+      return;
+    }
+    if (FUNCTION_NODES.has(node.type)) return;
+    if (node.type === 'PropertyDefinition' && !node.static) return;
+    if (node.type === 'ImportExpression') {
+      // Minifiers often print the specifier as a template literal without expressions.
+      const { source } = node;
+      const spec =
+        source?.type === 'Literal'
+          ? source.value
+          : source?.type === 'TemplateLiteral' && source.expressions.length === 0
+            ? source.quasis[0]?.value.cooked
+            : undefined;
+      if (typeof spec === 'string' && spec.startsWith('.')) found.add(resolveSpec(spec));
+    }
+    for (const [key, child] of Object.entries(node)) {
+      if (key !== 'type' && child && typeof child === 'object') walk(child);
+    }
+  };
+  walk(parse(chunk.code).body);
+  return [...found];
 }
 
 export const METRICS = /** @type {const} */ ([
@@ -238,7 +300,7 @@ export function formatReport(results, budgets, { external, top = 10 }) {
   const lines = [];
   lines.push('## Page budgets', '');
   lines.push(
-    'All dependencies bundled (minified ESM, code splitting on). "Initial" is the entry chunk and its static imports; "total" adds lazy chunks.',
+    'All dependencies bundled (minified ESM, code splitting on). "Initial" is the entry chunk, its static imports and anything they `import()` as soon as they run; "total" adds lazy chunks.',
   );
   if (external.length > 0) {
     lines.push(`Left out because the host app already pays for them: ${external.join(', ')}.`);
