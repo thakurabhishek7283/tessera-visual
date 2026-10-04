@@ -1,5 +1,5 @@
-import { useFeature } from '@tessera-kit/react';
 import { wrapElement } from '@tessera-internal/react-wrap';
+import { useFeature } from '@tessera-kit/react';
 import type { LocationValue, TesseraLocationPicker } from '../elements/location-picker.js';
 import type { TesseraMapElement } from '../elements/map.js';
 import type { Geocoder, LngLatBounds, MapMarker, MapsApi } from '../types.js';

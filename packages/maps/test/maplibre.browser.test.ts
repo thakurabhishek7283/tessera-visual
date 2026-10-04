@@ -1,5 +1,5 @@
-import { createTestInstance } from '@tessera-kit/testing';
 import { until } from '@tessera-internal/test-utils';
+import { createTestInstance } from '@tessera-kit/testing';
 import { afterEach, describe, expect, it } from 'vitest';
 import type { MapsApi } from '../src/index.js';
 import { configureMapLibre } from '../src/maplibre.js';
