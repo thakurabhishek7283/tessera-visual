@@ -1,7 +1,7 @@
-import '@tessera/annotator/elements';
-import type { AnnotatorHandle, W3CAnnotation } from '@tessera/annotator';
-import { AnnotatorConfig } from '@tessera/annotator';
-import { baseStyles, focusRing } from '@tessera/elements';
+import '@tessera-kit/annotator/elements';
+import type { AnnotatorHandle, W3CAnnotation } from '@tessera-kit/annotator';
+import { AnnotatorConfig } from '@tessera-kit/annotator';
+import { baseStyles, focusRing } from '@tessera-kit/elements';
 import {
   type CSSResultGroup,
   css,
@@ -177,7 +177,7 @@ export const annotateSection: Section = {
   blurb:
     'Draw shapes over an image, label them, add notes, undo and redo. Open another tab as another person and the set stays in sync; reload and it is still there.',
   schema: AnnotatorConfig,
-  load: () => import('@tessera/annotator'),
+  load: () => import('@tessera-kit/annotator'),
   defaults: {
     labels: [
       { value: 'tent site', color: 'green' },

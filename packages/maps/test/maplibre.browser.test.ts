@@ -1,4 +1,4 @@
-import { createTestInstance } from '@tessera/testing';
+import { createTestInstance } from '@tessera-kit/testing';
 import { until } from '@tessera-internal/test-utils';
 import { afterEach, describe, expect, it } from 'vitest';
 import type { MapsApi } from '../src/index.js';

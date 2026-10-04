@@ -1,4 +1,4 @@
-import type { TesseraContext } from '@tessera/core';
+import type { TesseraContext } from '@tessera-kit/core';
 import type { AnnotatorConfigValue } from './config.js';
 import { createSurface } from './surface.js';
 import type { AnnotatorApi, AnnotatorHandle } from './types.js';

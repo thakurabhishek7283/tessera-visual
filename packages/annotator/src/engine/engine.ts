@@ -10,7 +10,7 @@ import {
   type ReadonlyStore,
   type Store,
   systemClock,
-} from '@tessera/core';
+} from '@tessera-kit/core';
 import type { AnnotatorConfigValue, ToolId } from '../config.js';
 import { unionRect } from '../geometry/bbox.js';
 import { type HitOptions, hitTest } from '../geometry/hit.js';

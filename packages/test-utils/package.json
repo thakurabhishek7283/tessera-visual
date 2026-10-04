@@ -16,10 +16,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@tessera/core": "^0.1.0",
-    "@tessera/elements": "^0.1.0",
-    "@tessera/storage": "^0.1.0",
-    "@tessera/testing": "^0.1.0",
+    "@tessera-kit/core": "^0.1.0",
+    "@tessera-kit/elements": "^0.1.0",
+    "@tessera-kit/storage": "^0.1.0",
+    "@tessera-kit/testing": "^0.1.0",
     "axe-core": "^4.13.0",
     "lit": "^3.3.0",
     "vitest": "^5.0.0"

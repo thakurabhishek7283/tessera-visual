@@ -1,5 +1,5 @@
-import type { PluginLoader, TesseraConfig, TesseraInstance } from '@tessera/core';
-import { createTestInstance, type TestInstanceOptions } from '@tessera/testing';
+import type { PluginLoader, TesseraConfig, TesseraInstance } from '@tessera-kit/core';
+import { createTestInstance, type TestInstanceOptions } from '@tessera-kit/testing';
 import axe from 'axe-core';
 import { render, type TemplateResult } from 'lit';
 import { expect } from 'vitest';
@@ -103,7 +103,7 @@ export interface MountedInstance {
 
 /**
  * Creates a test instance (memory storage, fake clock, deterministic ids) and a `<tessera-root>`
- * wired to it. Needs `@tessera/elements/define` to have been imported by the test.
+ * wired to it. Needs `@tessera-kit/elements/define` to have been imported by the test.
  */
 export async function mountInstance(
   config: Partial<TesseraConfig> & Pick<TesseraConfig, 'features'>,

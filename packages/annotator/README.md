@@ -1,4 +1,4 @@
-# @tessera/annotator
+# @tessera-kit/annotator
 
 Draw, label and discuss shapes over an image, or on an endless whiteboard: a headless engine, `<tessera-annotator>`, `<tessera-whiteboard>`, an accessible list of the shapes and React bindings. Part of [tessera-visual](../../README.md).
 
@@ -10,7 +10,7 @@ It needs a storage adapter and nothing else. With the default `indexeddb` or `lo
 
 ```html
 <script type="module">
-  import '@tessera/annotator/elements';
+  import '@tessera-kit/annotator/elements';
 </script>
 
 <tessera-annotator src="/camp-map.jpg" set-id="camp-map" style="--tessera-annotator-height: 32rem"></tessera-annotator>
@@ -22,8 +22,8 @@ A bare tag works without any setup: it switches the feature on in an implicit in
 ### With `createTessera`
 
 ```ts
-import { createTessera } from '@tessera/core';
-import { createStorage } from '@tessera/storage';
+import { createTessera } from '@tessera-kit/core';
+import { createStorage } from '@tessera-kit/storage';
 
 const tessera = createTessera(
   {
@@ -40,7 +40,7 @@ const tessera = createTessera(
       },
     },
   },
-  { plugins: { annotator: () => import('@tessera/annotator') }, adapters: { storage: createStorage } },
+  { plugins: { annotator: () => import('@tessera-kit/annotator') }, adapters: { storage: createStorage } },
 );
 await tessera.ready;
 ```
@@ -74,7 +74,7 @@ import {
   type TesseraAnnotatorElement,
   useAnnotations,
   useAnnotatorHandle,
-} from '@tessera/annotator/react';
+} from '@tessera-kit/annotator/react';
 
 export function CampMap() {
   const ref = useRef<TesseraAnnotatorElement>(null);

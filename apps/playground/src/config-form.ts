@@ -1,4 +1,4 @@
-import { baseStyles, focusRing } from '@tessera/elements';
+import { baseStyles, focusRing } from '@tessera-kit/elements';
 import {
   type CSSResultGroup,
   css,

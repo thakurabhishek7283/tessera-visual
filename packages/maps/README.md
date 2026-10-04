@@ -1,4 +1,4 @@
-# @tessera/maps
+# @tessera-kit/maps
 
 A MapLibre map with clustered markers and popups, address search, and a form-associated location picker: a headless API, `<tessera-map>`, `<tessera-location-picker>` and React bindings. Part of [tessera-visual](../../README.md).
 
@@ -10,7 +10,7 @@ No API key is needed: the default style is [OpenFreeMap](https://openfreemap.org
 
 ```html
 <script type="module">
-  import '@tessera/maps/elements';
+  import '@tessera-kit/maps/elements';
 </script>
 
 <tessera-map id="sites" fit-markers label="Campsites" style="--tessera-map-height: 28rem">
@@ -39,7 +39,7 @@ MapLibre 6 starts its web worker from two files that sit next to its own module,
 
 ```ts
 // vite.config.ts
-import { tesseraMapsWorker } from '@tessera/maps/vite';
+import { tesseraMapsWorker } from '@tessera-kit/maps/vite';
 export default defineConfig({ plugins: [tesseraMapsWorker()] });
 ```
 
@@ -52,7 +52,7 @@ The plugin serves `maplibre-gl-worker.mjs` and `maplibre-gl-shared.mjs` from `/t
 ### With `createTessera`
 
 ```ts
-import { createTessera } from '@tessera/core';
+import { createTessera } from '@tessera-kit/core';
 
 const tessera = createTessera(
   {
@@ -66,7 +66,7 @@ const tessera = createTessera(
       },
     },
   },
-  { plugins: { maps: () => import('@tessera/maps') } },
+  { plugins: { maps: () => import('@tessera-kit/maps') } },
 );
 await tessera.ready;
 
@@ -80,7 +80,7 @@ const hits = await maps?.geocoder().search('Seestrasse Zürich');
 ### React
 
 ```tsx
-import { LocationPicker, MapView, useGeocoder } from '@tessera/maps/react';
+import { LocationPicker, MapView, useGeocoder } from '@tessera-kit/maps/react';
 
 export function Sites({ sites }: { sites: Array<{ id: string; lng: number; lat: number; title: string }> }) {
   return (

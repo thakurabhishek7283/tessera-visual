@@ -1,5 +1,5 @@
-import type { ReadonlyStore, Store } from '@tessera/core';
-import { createStore } from '@tessera/core';
+import type { ReadonlyStore, Store } from '@tessera-kit/core';
+import { createStore } from '@tessera-kit/core';
 
 /** The selected annotation ids, in selection order. The last one is the primary selection. */
 export class Selection {

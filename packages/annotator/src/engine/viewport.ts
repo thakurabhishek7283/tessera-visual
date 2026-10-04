@@ -1,5 +1,5 @@
-import type { Store } from '@tessera/core';
-import { createStore } from '@tessera/core';
+import type { Store } from '@tessera-kit/core';
+import { createStore } from '@tessera-kit/core';
 import { clamp } from '../geometry/math.js';
 import type { Point, Rect } from '../geometry/model.js';
 

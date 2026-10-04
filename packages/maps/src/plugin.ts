@@ -1,4 +1,4 @@
-import { definePlugin } from '@tessera/core';
+import { definePlugin } from '@tessera-kit/core';
 import { createMapsApi } from './api.js';
 import { MapsConfig } from './config.js';
 import { de } from './i18n/de.js';
@@ -12,7 +12,7 @@ const disposers = new WeakMap<MapsApi, () => void>();
  * location picker. MapLibre loads when the first map opens.
  *
  * @example
- * createTessera(cfg, { plugins: { maps: () => import('@tessera/maps') } });
+ * createTessera(cfg, { plugins: { maps: () => import('@tessera-kit/maps') } });
  */
 export const mapsPlugin = definePlugin({
   id: 'maps',

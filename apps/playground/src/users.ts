@@ -1,4 +1,4 @@
-import type { UserInfo } from '@tessera/core';
+import type { UserInfo } from '@tessera-kit/core';
 
 /** Demo identities. `?user=bob` signs a tab in as Bob, so two tabs are two different people. */
 export const USERS: Record<string, UserInfo> = {

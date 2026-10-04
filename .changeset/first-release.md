@@ -1,6 +1,6 @@
 ---
-'@tessera/annotator': minor
-'@tessera/maps': minor
+'@tessera-kit/annotator': minor
+'@tessera-kit/maps': minor
 ---
 
-First release: image annotation and a whiteboard (`@tessera/annotator`), and maps with clustering and a form-associated location picker (`@tessera/maps`).
+First release: image annotation and a whiteboard (`@tessera-kit/annotator`), and maps with clustering and a form-associated location picker (`@tessera-kit/maps`).

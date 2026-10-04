@@ -1,4 +1,4 @@
-import type { History, ReadonlyStore, Store, Unsubscribe } from '@tessera/core';
+import type { History, ReadonlyStore, Store, Unsubscribe } from '@tessera-kit/core';
 import type { AnnotatorConfigValue, ToolId } from './config.js';
 import type { ChangeSet } from './engine/engine.js';
 import type { ViewState } from './engine/viewport.js';
@@ -94,7 +94,7 @@ export interface AnnotatorApi {
   create(el: HTMLElement, opts: AnnotatorOptions): Promise<AnnotatorHandle>;
 }
 
-declare module '@tessera/core' {
+declare module '@tessera-kit/core' {
   interface FeatureApiMap {
     annotator: AnnotatorApi;
   }

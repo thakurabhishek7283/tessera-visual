@@ -1,4 +1,4 @@
-import { defineElement, registerImplicitPlugin } from '@tessera/elements';
+import { defineElement, registerImplicitPlugin } from '@tessera-kit/elements';
 import { TesseraLocationPicker } from './location-picker.js';
 import { TesseraMapElement } from './map.js';
 

@@ -18,8 +18,8 @@ Marking up a picture and putting places on a map keep coming back in products (a
 
 | Package | What it gives you | More |
 | --- | --- | --- |
-| [`@tessera/annotator`](packages/annotator) | `<tessera-annotator>` for images and `<tessera-whiteboard>` for an endless board: rectangles, ellipses, polygons, lines, arrows, freehand with pen pressure, points and text; labels, notes, snapping, undo and redo, rotation, W3C Web Annotation import and export, PNG export, an accessible list of all shapes | [README](packages/annotator/README.md) |
-| [`@tessera/maps`](packages/maps) | `<tessera-map>` with clustered markers and popups from a template, `<tessera-location-picker>` (form-associated: address search, click or drag a pin, submits JSON), a rate-limited Nominatim and MapTiler geocoder, light and dark styles | [README](packages/maps/README.md) |
+| [`@tessera-kit/annotator`](packages/annotator) | `<tessera-annotator>` for images and `<tessera-whiteboard>` for an endless board: rectangles, ellipses, polygons, lines, arrows, freehand with pen pressure, points and text; labels, notes, snapping, undo and redo, rotation, W3C Web Annotation import and export, PNG export, an accessible list of all shapes | [README](packages/annotator/README.md) |
+| [`@tessera-kit/maps`](packages/maps) | `<tessera-map>` with clustered markers and popups from a template, `<tessera-location-picker>` (form-associated: address search, click or drag a pin, submits JSON), a rate-limited Nominatim and MapTiler geocoder, light and dark styles | [README](packages/maps/README.md) |
 
 Both have a headless API and a `/react` entry.
 
@@ -40,8 +40,8 @@ The packages are not on npm yet, so build them from source first (see [Developme
 
 ```html
 <script type="module">
-  import '@tessera/annotator/elements';
-  import '@tessera/maps/elements';
+  import '@tessera-kit/annotator/elements';
+  import '@tessera-kit/maps/elements';
 </script>
 
 <tessera-annotator src="/camp-map.jpg" set-id="camp-map"></tessera-annotator>
@@ -55,8 +55,8 @@ A bare element runs on Tessera's implicit default instance, which stores in the 
 ### React
 
 ```tsx
-import { Annotator } from '@tessera/annotator/react';
-import { LocationPicker, MapView } from '@tessera/maps/react';
+import { Annotator } from '@tessera-kit/annotator/react';
+import { LocationPicker, MapView } from '@tessera-kit/maps/react';
 
 export function Site({ markers }: { markers: Array<{ id: string; lng: number; lat: number }> }) {
   return (
@@ -78,8 +78,8 @@ The wrappers do nothing on the server, so they are safe in Next.js; import them 
 Turn kits on and off in one place; each loads only when enabled.
 
 ```ts
-import { createTessera } from '@tessera/core';
-import { createStorage } from '@tessera/storage';
+import { createTessera } from '@tessera-kit/core';
+import { createStorage } from '@tessera-kit/storage';
 
 const tessera = createTessera(
   {
@@ -93,9 +93,9 @@ const tessera = createTessera(
   },
   {
     plugins: {
-      annotator: () => import('@tessera/annotator'),
-      maps: () => import('@tessera/maps'),
-      comments: () => import('@tessera/comments'),
+      annotator: () => import('@tessera-kit/annotator'),
+      maps: () => import('@tessera-kit/maps'),
+      comments: () => import('@tessera-kit/comments'),
     },
     adapters: { storage: createStorage },
   },
@@ -147,7 +147,7 @@ Chromium comes from `npx playwright install --with-deps chromium`, or set `CHROM
 - [x] Whiteboard: endless board with grid, colours and line widths
 - [x] Maps: lazy MapLibre, clustering, popups, theme styles, geocoder with rate limit, form-associated picker
 - [x] React bindings, English and German, light and dark
-- [ ] `@tessera/annotator-osd`: deep-zoom images through OpenSeadragon
+- [ ] `@tessera-kit/annotator-osd`: deep-zoom images through OpenSeadragon
 - [ ] `<tessera-static-map>`: a lightweight preview without MapLibre for list cards
 - [ ] Rich text in annotation notes (works today through the `comments` and `editor` kits)
 - [ ] Publish to npm

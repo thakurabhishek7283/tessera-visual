@@ -1,4 +1,4 @@
-import { type TesseraContext, TesseraError } from '@tessera/core';
+import { type TesseraContext, TesseraError } from '@tessera-kit/core';
 import { AnnotatorConfig, type AnnotatorConfigValue } from './config.js';
 import { AnnotatorEngine } from './engine/engine.js';
 import { attachInput } from './engine/input.js';

@@ -1,4 +1,4 @@
-import { useFeature, useStore } from '@tessera/react';
+import { useFeature, useStore } from '@tessera-kit/react';
 import { wrapElement } from '@tessera-internal/react-wrap';
 import { type RefObject, useEffect, useState } from 'react';
 import type { AnnotatorConfigValue } from '../config.js';

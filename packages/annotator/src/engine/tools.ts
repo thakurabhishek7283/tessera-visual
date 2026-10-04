@@ -1,5 +1,5 @@
-import type { Store } from '@tessera/core';
-import { createStore } from '@tessera/core';
+import type { Store } from '@tessera-kit/core';
+import { createStore } from '@tessera-kit/core';
 import type { ToolId } from '../config.js';
 import type { Annotation, Geometry, Point, Style } from '../geometry/model.js';
 import type { AnnotatorEngine } from './engine.js';

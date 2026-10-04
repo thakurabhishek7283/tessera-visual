@@ -1,5 +1,5 @@
-import type { TesseraInstance, ThemeMode } from '@tessera/core';
-import { baseStyles, focusRing, toastErrors } from '@tessera/elements';
+import type { TesseraInstance, ThemeMode } from '@tessera-kit/core';
+import { baseStyles, focusRing, toastErrors } from '@tessera-kit/elements';
 import {
   type CSSResultGroup,
   css,

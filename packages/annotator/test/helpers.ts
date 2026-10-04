@@ -1,5 +1,5 @@
-import { createIdGenerator } from '@tessera/core';
-import { createFakeClock, type FakeClock } from '@tessera/testing';
+import { createIdGenerator } from '@tessera-kit/core';
+import { createFakeClock, type FakeClock } from '@tessera-kit/testing';
 import type { ToolId } from '../src/config.js';
 import { AnnotatorConfig, type AnnotatorConfigValue } from '../src/config.js';
 import { AnnotatorEngine, type SurfaceMode } from '../src/engine/engine.js';

@@ -1,4 +1,4 @@
-import '@tessera/elements/define';
+import '@tessera-kit/elements/define';
 import '../src/elements/index.js';
 import {
   cleanup,
@@ -389,7 +389,7 @@ describe('<tessera-location-picker>', () => {
 
 describe('without any setup', () => {
   it('a bare <tessera-map> switches the feature on in the implicit instance and opens a map', async () => {
-    const { resetDefaultInstance } = await import('@tessera/elements');
+    const { resetDefaultInstance } = await import('@tessera-kit/elements');
     resetDefaultInstance();
     const host = document.createElement('div');
     document.body.append(host);

@@ -1,4 +1,4 @@
-import '@tessera/elements/define';
+import '@tessera-kit/elements/define';
 import '../src/elements/index.js';
 import {
   cleanup,
@@ -535,7 +535,7 @@ describe('<tessera-annotator-minimap>', () => {
 
 describe('without any setup', () => {
   it('a bare <tessera-annotator> switches the feature on in the implicit instance and works', async () => {
-    const { resetDefaultInstance } = await import('@tessera/elements');
+    const { resetDefaultInstance } = await import('@tessera-kit/elements');
     resetDefaultInstance();
     const host = document.createElement('div');
     host.style.width = '800px';

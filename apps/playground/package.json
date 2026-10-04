@@ -11,12 +11,12 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@tessera/annotator": "workspace:*",
-    "@tessera/core": "^0.1.0",
-    "@tessera/elements": "^0.1.0",
-    "@tessera/maps": "workspace:*",
-    "@tessera/storage": "^0.1.0",
-    "@tessera/transport": "^0.1.0",
+    "@tessera-kit/annotator": "workspace:*",
+    "@tessera-kit/core": "^0.1.0",
+    "@tessera-kit/elements": "^0.1.0",
+    "@tessera-kit/maps": "workspace:*",
+    "@tessera-kit/storage": "^0.1.0",
+    "@tessera-kit/transport": "^0.1.0",
     "lit": "^3.3.0",
     "zod": "^4.1.0"
   },

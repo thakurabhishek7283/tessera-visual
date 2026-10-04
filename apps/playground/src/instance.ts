@@ -4,9 +4,9 @@ import {
   type TesseraConfig,
   type TesseraInstance,
   type ThemeMode,
-} from '@tessera/core';
-import { createStorage, createUploads } from '@tessera/storage';
-import { createTransport } from '@tessera/transport';
+} from '@tessera-kit/core';
+import { createStorage, createUploads } from '@tessera-kit/storage';
+import { createTransport } from '@tessera-kit/transport';
 import { FEATURES, featureOf } from './sections.js';
 import { USERS } from './users.js';
 

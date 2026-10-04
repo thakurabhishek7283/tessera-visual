@@ -1,6 +1,6 @@
-import '@tessera/elements/define';
-import { TesseraProvider } from '@tessera/react';
-import { createTestInstance } from '@tessera/testing';
+import '@tessera-kit/elements/define';
+import { TesseraProvider } from '@tessera-kit/react';
+import { createTestInstance } from '@tessera-kit/testing';
 import { cleanup, until } from '@tessera-internal/test-utils';
 import { useRef } from 'react';
 import { createRoot } from 'react-dom/client';

@@ -1,5 +1,5 @@
-import { createHistory, createIdGenerator, type History } from '@tessera/core';
-import { createFakeClock } from '@tessera/testing';
+import { createHistory, createIdGenerator, type History } from '@tessera-kit/core';
+import { createFakeClock } from '@tessera-kit/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { AnnotationStore } from '../src/engine/store.js';
 import type { Geometry, NewAnnotation } from '../src/geometry/model.js';

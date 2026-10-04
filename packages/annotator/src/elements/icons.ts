@@ -1,4 +1,4 @@
-import { registerIcons } from '@tessera/elements';
+import { registerIcons } from '@tessera-kit/elements';
 
 /**
  * Adds the tool icons, drawn for this kit on the same 24×24 grid and 2 px strokes as the core set.

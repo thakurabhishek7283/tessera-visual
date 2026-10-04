@@ -1,4 +1,4 @@
-import { createTestInstance } from '@tessera/testing';
+import { createTestInstance } from '@tessera-kit/testing';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { AnnotatorApi, AnnotatorHandle } from '../src/index.js';
 

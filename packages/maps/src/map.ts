@@ -4,7 +4,7 @@ import {
   type TesseraContext,
   TesseraError,
   type Unsubscribe,
-} from '@tessera/core';
+} from '@tessera-kit/core';
 import type { MapsConfigValue } from './config.js';
 import { boundsOf, mapColor, markersToGeoJSON } from './geojson.js';
 import { injectCss, loadMapLibre, type MLMap, type MLMarker, type MLPopup } from './maplibre.js';

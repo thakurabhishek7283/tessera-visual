@@ -1,4 +1,4 @@
-import { defineElement, registerImplicitPlugin } from '@tessera/elements';
+import { defineElement, registerImplicitPlugin } from '@tessera-kit/elements';
 import { TesseraAnnotationList } from './annotation-list.js';
 import { TesseraAnnotatorElement } from './annotator.js';
 import { registerAnnotatorIcons } from './icons.js';

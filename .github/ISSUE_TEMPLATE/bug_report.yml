@@ -20,4 +20,4 @@ body:
     id: version
     attributes:
       label: Version and browser
-      placeholder: "@tessera/annotator 0.1.0, Chrome 130"
+      placeholder: "@tessera-kit/annotator 0.1.0, Chrome 130"

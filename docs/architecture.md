@@ -5,7 +5,7 @@ This page is for people changing the code. The user-facing view is in the [packa
 ## Packages
 
 ```text
-   @tessera/core   @tessera/elements   @tessera/storage   (@tessera/transport, optional)
+   @tessera-kit/core   @tessera-kit/elements   @tessera-kit/storage   (@tessera-kit/transport, optional)
         ▲                  ▲                   ▲
         │                  │                   │
         └──────── annotator ·  maps ───────────┘      kits never import each other

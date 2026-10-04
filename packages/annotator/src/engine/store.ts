@@ -1,5 +1,5 @@
-import type { Clock, Command, History, IdGenerator, Store } from '@tessera/core';
-import { createStore } from '@tessera/core';
+import type { Clock, Command, History, IdGenerator, Store } from '@tessera-kit/core';
+import { createStore } from '@tessera-kit/core';
 import type { Annotation, NewAnnotation } from '../geometry/model.js';
 
 /** One annotation going from `from` to `to`; `undefined` means "does not exist". */

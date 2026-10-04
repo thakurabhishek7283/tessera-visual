@@ -1,2 +1,2 @@
-import '@tessera/elements/define';
+import '@tessera-kit/elements/define';
 import './app.js';

@@ -1,4 +1,4 @@
-import { tesseraMapsWorker } from '@tessera/maps/vite';
+import { tesseraMapsWorker } from '@tessera-kit/maps/vite';
 import { defineConfig } from 'vite';
 
 // GitHub Pages serves the site from /<repo>/, so CI passes BASE_PATH.

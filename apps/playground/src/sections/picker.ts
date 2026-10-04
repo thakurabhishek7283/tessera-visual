@@ -1,5 +1,5 @@
-import '@tessera/maps/elements';
-import { baseStyles, focusRing } from '@tessera/elements';
+import '@tessera-kit/maps/elements';
+import { baseStyles, focusRing } from '@tessera-kit/elements';
 import {
   type CSSResultGroup,
   css,
@@ -89,6 +89,6 @@ export const pickerSection: Section = {
   feature: 'maps',
   blurb:
     'Search for an address (Nominatim, one request per second) or click the map; drag the pin to adjust. The element is form-associated: the form submits the place as JSON and checks that one is chosen.',
-  load: () => import('@tessera/maps'),
+  load: () => import('@tessera-kit/maps'),
   render: () => html`<picker-demo></picker-demo>`,
 };

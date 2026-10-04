@@ -1,4 +1,4 @@
-import type { ReadonlyStore, Unsubscribe } from '@tessera/core';
+import type { ReadonlyStore, Unsubscribe } from '@tessera-kit/core';
 import type { MapsConfigValue } from './config.js';
 
 /** `[[west, south], [east, north]]` */
@@ -95,7 +95,7 @@ export interface MapsApi {
   geocoder(): Geocoder;
 }
 
-declare module '@tessera/core' {
+declare module '@tessera-kit/core' {
   interface FeatureApiMap {
     maps: MapsApi;
   }

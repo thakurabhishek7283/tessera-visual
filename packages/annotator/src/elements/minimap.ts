@@ -1,4 +1,4 @@
-import { baseStyles, TesseraElement } from '@tessera/elements';
+import { baseStyles, TesseraElement } from '@tessera-kit/elements';
 import { type CSSResultGroup, css, html, nothing, type PropertyDeclarations, svg } from 'lit';
 import { resolveColor } from '../engine/color.js';
 import { bboxOf, unionRect } from '../geometry/bbox.js';

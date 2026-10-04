@@ -1,4 +1,4 @@
-import type { Unsubscribe } from '@tessera/core';
+import type { Unsubscribe } from '@tessera-kit/core';
 
 /** The slice of MapLibre GL JS this kit uses, so a test double or a custom build can stand in. */
 export interface MLEventful {

@@ -1,4 +1,4 @@
-import { definePlugin } from '@tessera/core';
+import { definePlugin } from '@tessera-kit/core';
 import { createAnnotatorApi } from './api.js';
 import { AnnotatorConfig } from './config.js';
 import { de } from './i18n/de.js';
@@ -12,7 +12,7 @@ const disposers = new WeakMap<AnnotatorApi, () => Promise<void>>();
  * Sets are stored through the instance's storage adapter.
  *
  * @example
- * createTessera(cfg, { plugins: { annotator: () => import('@tessera/annotator') } });
+ * createTessera(cfg, { plugins: { annotator: () => import('@tessera-kit/annotator') } });
  */
 export const annotatorPlugin = definePlugin({
   id: 'annotator',

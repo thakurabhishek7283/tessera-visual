@@ -1,6 +1,6 @@
-import { createHistory, createIdGenerator } from '@tessera/core';
-import { createMemoryStorage } from '@tessera/storage';
-import { createFakeClock, type FakeClock } from '@tessera/testing';
+import { createHistory, createIdGenerator } from '@tessera-kit/core';
+import { createMemoryStorage } from '@tessera-kit/storage';
+import { createFakeClock, type FakeClock } from '@tessera-kit/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AnnotatorConfig } from '../src/config.js';
 import { AnnotatorEngine } from '../src/engine/engine.js';

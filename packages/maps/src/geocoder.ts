@@ -1,4 +1,4 @@
-import { TesseraError } from '@tessera/core';
+import { TesseraError } from '@tessera-kit/core';
 import type { MapsConfigValue } from './config.js';
 import type { GeocodeResult, Geocoder, SearchOptions } from './types.js';
 

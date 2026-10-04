@@ -36,13 +36,13 @@
   },
   "pnpm": {
     "overrides": {
-      "@tessera/core": "link:./external/tessera/packages/core",
-      "@tessera/elements": "link:./external/tessera/packages/elements",
-      "@tessera/react": "link:./external/tessera/packages/react",
-      "@tessera/testing": "link:./external/tessera/packages/testing",
-      "@tessera/transport": "link:./external/tessera/packages/transport",
-      "@tessera/storage": "link:./external/tessera/packages/storage",
-      "@tessera/protocol": "link:./external/tessera/packages/protocol"
+      "@tessera-kit/core": "link:./external/tessera/packages/core",
+      "@tessera-kit/elements": "link:./external/tessera/packages/elements",
+      "@tessera-kit/react": "link:./external/tessera/packages/react",
+      "@tessera-kit/testing": "link:./external/tessera/packages/testing",
+      "@tessera-kit/transport": "link:./external/tessera/packages/transport",
+      "@tessera-kit/storage": "link:./external/tessera/packages/storage",
+      "@tessera-kit/protocol": "link:./external/tessera/packages/protocol"
     }
   }
 }

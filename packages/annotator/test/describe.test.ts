@@ -1,4 +1,4 @@
-import { createI18n } from '@tessera/core';
+import { createI18n } from '@tessera-kit/core';
 import { describe, expect, it } from 'vitest';
 import { describeGeometry } from '../src/describe.js';
 import { de } from '../src/i18n/de.js';

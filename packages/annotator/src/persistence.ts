@@ -1,5 +1,5 @@
-import { type Doc, type TesseraContext, TesseraError, type Unsubscribe } from '@tessera/core';
-import { type Collection, createCollection } from '@tessera/storage';
+import { type Doc, type TesseraContext, TesseraError, type Unsubscribe } from '@tessera-kit/core';
+import { type Collection, createCollection } from '@tessera-kit/storage';
 import { z } from 'zod';
 import type { AnnotatorEngine, ChangeSet } from './engine/engine.js';
 import { type Annotation, AnnotationSchema } from './geometry/model.js';

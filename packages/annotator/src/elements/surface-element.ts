@@ -1,5 +1,5 @@
-import type { Unsubscribe } from '@tessera/core';
-import { baseStyles, focusRing, TesseraElement, visuallyHidden } from '@tessera/elements';
+import type { Unsubscribe } from '@tessera-kit/core';
+import { baseStyles, focusRing, TesseraElement, visuallyHidden } from '@tessera-kit/elements';
 import { type CSSResultGroup, css, html, nothing, type PropertyDeclarations } from 'lit';
 import type { AnnotatorConfigValue } from '../config.js';
 import { describeGeometry } from '../describe.js';

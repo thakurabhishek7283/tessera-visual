@@ -1,4 +1,4 @@
-import type { TesseraContext } from '@tessera/core';
+import type { TesseraContext } from '@tessera-kit/core';
 import type { MapsConfigValue } from '../config.js';
 import type { MapHandle, MapsApi } from '../types.js';
 

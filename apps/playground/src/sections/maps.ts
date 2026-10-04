@@ -1,7 +1,7 @@
-import '@tessera/maps/elements';
-import { baseStyles, focusRing } from '@tessera/elements';
-import { type MapMarker, MapsConfig } from '@tessera/maps';
-import type { TesseraMapElement } from '@tessera/maps/elements';
+import '@tessera-kit/maps/elements';
+import { baseStyles, focusRing } from '@tessera-kit/elements';
+import { type MapMarker, MapsConfig } from '@tessera-kit/maps';
+import type { TesseraMapElement } from '@tessera-kit/maps/elements';
 import {
   type CSSResultGroup,
   css,
@@ -134,7 +134,7 @@ export const mapsSection: Section = {
   blurb:
     'MapLibre with OpenFreeMap tiles, so no API key. Two thousand markers cluster on the fly; click a marker for a popup built from a template. Needs the network for tiles.',
   schema: MapsConfig,
-  load: () => import('@tessera/maps'),
+  load: () => import('@tessera-kit/maps'),
   // Vite moves MapLibre away from its worker files; the tesseraMapsWorker() plugin serves them.
   defaults: { workerUrl: `${import.meta.env.BASE_URL}tessera-maps/maplibre-gl-worker.mjs` },
   render: () => html`<map-demo></map-demo>`,

@@ -1,5 +1,5 @@
-import '@tessera/annotator/elements';
-import { baseStyles } from '@tessera/elements';
+import '@tessera-kit/annotator/elements';
+import { baseStyles } from '@tessera-kit/elements';
 import { type CSSResultGroup, css, html, LitElement } from 'lit';
 import type { Section } from '../sections.js';
 
@@ -32,6 +32,6 @@ export const whiteboardSection: Section = {
     'The same engine on an endless board: freehand with pressure, shapes, text, colours and line widths. Space or middle mouse pans, Ctrl or ⌘ with the wheel zooms.',
   // The whiteboard is the annotator feature in board mode: its options live on the Annotate tab.
   feature: 'annotator',
-  load: () => import('@tessera/annotator'),
+  load: () => import('@tessera-kit/annotator'),
   render: () => html`<whiteboard-demo></whiteboard-demo>`,
 };

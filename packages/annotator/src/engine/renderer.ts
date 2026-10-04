@@ -1,4 +1,4 @@
-import type { Unsubscribe } from '@tessera/core';
+import type { Unsubscribe } from '@tessera-kit/core';
 import { bboxOf, LINE_HEIGHT, type TextMeasure } from '../geometry/bbox.js';
 import type { Annotation, Geometry, Point, Rect, Style } from '../geometry/model.js';
 import { computeHandles } from '../tools/handles.js';

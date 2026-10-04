@@ -1,4 +1,4 @@
-import type { TesseraContext } from '@tessera/core';
+import type { TesseraContext } from '@tessera-kit/core';
 import type { MapsConfigValue } from './config.js';
 import { createGeocoder } from './geocoder.js';
 import { createMap } from './map.js';
