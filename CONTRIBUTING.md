@@ -34,3 +34,7 @@ Component and end-to-end tests need Chromium. Install it with `npx playwright in
 - **Elements** use tokens only (no hard-coded colours), expose `part` names on the main internals and fire kebab-case `CustomEvent`s that bubble and are composed.
 - **Accessibility** is part of done: keyboard operation, visible focus, labelled controls.
 - **Public API changes** need a changeset: `pnpm changeset`.
+
+## Releases
+
+Merging changesets into `main` makes the Release workflow open a "Version Packages" pull request. Merging that pull request releases: the workflow publishes to npm (when `NPM_TOKEN` is set) and tags every bumped package as `<package>@<version>` (for example `@tessera-kit/chat@0.2.0`) on the commit that bumped it, with `scripts/release-tags.mjs`. Don't create release tags by hand.
