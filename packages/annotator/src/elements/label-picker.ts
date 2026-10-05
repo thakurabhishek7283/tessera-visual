@@ -1,6 +1,7 @@
 import { baseStyles, focusRing, TesseraElement } from '@tessera-kit/elements';
 import { type CSSResultGroup, css, html, nothing, type PropertyDeclarations } from 'lit';
 import { resolveColor } from '../engine/color.js';
+import { version } from '../version.js';
 import { uiStyles } from './ui.js';
 
 export interface LabelChoice {
@@ -18,6 +19,8 @@ export interface LabelChoice {
  * @csspart picker @csspart option
  */
 export class TesseraLabelPicker extends TesseraElement {
+  static override tesseraVersion: string = version;
+
   static override properties: PropertyDeclarations = {
     labels: { attribute: false },
     allowFree: { type: Boolean, attribute: 'allow-free' },

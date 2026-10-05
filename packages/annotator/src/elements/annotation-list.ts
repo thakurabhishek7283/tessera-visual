@@ -6,6 +6,7 @@ import { describeGeometry } from '../describe.js';
 import { resolveColor } from '../engine/color.js';
 import { type Annotation, labelOf } from '../geometry/model.js';
 import type { AnnotatorHandle } from '../types.js';
+import { version } from '../version.js';
 import { uiStyles } from './ui.js';
 
 /** Whether the `comments` kit is on and its element is defined, so a discussion can be shown. */
@@ -27,6 +28,8 @@ function commentsAvailable(ctx: TesseraContext): boolean {
  * @csspart list @csspart item @csspart details
  */
 export class TesseraAnnotationList extends TesseraElement {
+  static override tesseraVersion: string = version;
+
   static override properties: PropertyDeclarations = {
     for: { attribute: 'for' },
     handle: { attribute: false },

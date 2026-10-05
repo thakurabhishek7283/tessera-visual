@@ -6,16 +6,27 @@
   "author": "Abhishek Thakur",
   "type": "module",
   "sideEffects": [
-    "./dist/elements/index.js"
+    "./dist/autoload.js",
+    "./dist/elements/**/*.js",
+    "./src/autoload.ts",
+    "./src/elements/**/*.ts"
   ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./autoload": {
+      "types": "./dist/autoload.d.ts",
+      "import": "./dist/autoload.js"
+    },
     "./elements": {
       "types": "./dist/elements/index.d.ts",
       "import": "./dist/elements/index.js"
+    },
+    "./elements/*": {
+      "types": "./dist/elements/tags/*.d.ts",
+      "import": "./dist/elements/tags/*.js"
     },
     "./react": {
       "types": "./dist/react/index.d.ts",

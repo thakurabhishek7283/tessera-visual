@@ -8,6 +8,7 @@ import {
   type PropertyValues,
 } from 'lit';
 import type { LngLatBounds, MapHandle, MapMarker } from '../types.js';
+import { version } from '../version.js';
 import { MapSession } from './session.js';
 
 /** `"8.54,47.37"` as `[lng, lat]`. */
@@ -51,6 +52,8 @@ export function fillTemplate(template: HTMLTemplateElement, marker: MapMarker): 
  * @slot popup - a `<template>` for marker popups
  */
 export class TesseraMapElement extends TesseraElement {
+  static override tesseraVersion: string = version;
+
   static override properties: PropertyDeclarations = {
     markers: { attribute: false },
     center: { converter: { fromAttribute: (v: string | null) => parseCenter(v) } },
