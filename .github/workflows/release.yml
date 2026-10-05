@@ -19,6 +19,9 @@ jobs:
       HAS_NPM_TOKEN: ${{ secrets.NPM_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history and tags: release-tags.mjs finds the commit that set each version.
+          fetch-depth: 0
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -30,11 +33,24 @@ jobs:
       - run: pnpm build
       # Without NPM_TOKEN there is no publish script, so this only opens or updates the
       # "Version Packages" pull request instead of failing on unpublished packages.
-      - uses: changesets/action@v1
+      - id: changesets
+        uses: changesets/action@v1
         with:
           version: pnpm changeset version
           publish: ${{ env.HAS_NPM_TOKEN == 'true' && 'pnpm changeset publish' || '' }}
+          # Releases are git tags only (see the next step), not GitHub Releases.
+          createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # Tags each released version as <package>@<version> on the commit that set it (the merged
+      # "Version Packages" commit), whether or not it was published. Already-tagged versions are
+      # skipped, so this is a no-op on every other push. Only when no changesets are pending:
+      # otherwise the step above has just checked out the unmerged version-bump commit.
+      - name: Tag released versions
+        if: steps.changesets.outputs.hasChangesets == 'false'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          node scripts/release-tags.mjs --since v0.1.0 --push
