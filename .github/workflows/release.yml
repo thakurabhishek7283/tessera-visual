@@ -18,12 +18,12 @@ jobs:
     env:
       HAS_NPM_TOKEN: ${{ secrets.NPM_TOKEN != '' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # Full history and tags: release-tags.mjs finds the commit that set each version.
           fetch-depth: 0
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
@@ -34,7 +34,7 @@ jobs:
       # Without NPM_TOKEN there is no publish script, so this only opens or updates the
       # "Version Packages" pull request instead of failing on unpublished packages.
       - id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
           version: pnpm changeset version
           publish: ${{ env.HAS_NPM_TOKEN == 'true' && 'pnpm changeset publish' || '' }}
