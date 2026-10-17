@@ -29,7 +29,7 @@
     "@changesets/cli": "^3.0.0",
     "@playwright/test": "^1.63.0",
     "@size-limit/preset-small-lib": "^14.1.0",
-    "rolldown": "1.2.12",
+    "rolldown": "1.2.14",
     "size-limit": "^14.1.0",
     "tsdown": "^0.23.0",
     "turbo": "^2.11.0",
